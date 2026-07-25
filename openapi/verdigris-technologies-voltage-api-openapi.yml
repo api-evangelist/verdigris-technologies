@@ -1,0 +1,775 @@
+openapi: 3.1.0
+info:
+  title: Data Control Voltage API
+  description: Microservice that serves insightful power and energy data
+  version: '1.1'
+  contact:
+    name: Verdigris Support
+    email: support@verdigris.co
+    url: https://docs.verdigris.co/
+  termsOfService: https://verdigris.co/terms
+servers:
+- url: https://api.verdigris.co/data/v4
+security:
+- oauth2: []
+tags:
+- name: Voltage
+  description: Endpoints that return voltage data
+paths:
+  /voltage/circuits:
+    get:
+      tags:
+      - Voltage
+      operationId: getBatchCircuitVoltage
+      summary: Batch circuit voltage (RMS)
+      description: 'Gets voltage data for multiple circuits in a single batch request. Units are in volts (SI unit: **V**).
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/accept'
+      - $ref: '#/components/parameters/circuitIds'
+      - $ref: '#/components/parameters/interval'
+      - $ref: '#/components/parameters/intervalScopedStartTime'
+      - $ref: '#/components/parameters/intervalScopedEndTime'
+      - $ref: '#/components/parameters/timestampFormat'
+      - $ref: '#/components/parameters/timezone'
+      - $ref: '#/components/parameters/phaseCxOverride'
+      responses:
+        '200':
+          $ref: '#/components/responses/successVoltage'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/entityNotFound'
+        '422':
+          $ref: '#/components/responses/unprocessableEntity'
+  /voltage/circuits/waveforms:
+    get:
+      tags:
+      - Voltage
+      operationId: getBatchCircuitVoltageWaveform
+      summary: Batch circuit voltage waveforms
+      description: 'Gets voltage waveforms for multiple circuits in a single batch request.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/accept'
+      - $ref: '#/components/parameters/circuitIds'
+      - $ref: '#/components/parameters/startTime'
+      - $ref: '#/components/parameters/endTime'
+      - $ref: '#/components/parameters/timestampFormat'
+      - $ref: '#/components/parameters/timezone'
+      responses:
+        '200':
+          $ref: '#/components/responses/successWaveform'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/entityNotFound'
+        '422':
+          $ref: '#/components/responses/unprocessableEntity'
+  /voltage/circuits/{id}:
+    get:
+      tags:
+      - Voltage
+      operationId: getCircuitVoltage
+      summary: Circuit voltage (RMS)
+      description: 'Gets voltage data for a circuit. Units are in volts (SI unit: **V**).
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/accept'
+      - $ref: '#/components/parameters/circuitId'
+      - $ref: '#/components/parameters/interval'
+      - $ref: '#/components/parameters/intervalScopedStartTime'
+      - $ref: '#/components/parameters/intervalScopedEndTime'
+      - $ref: '#/components/parameters/timestampFormat'
+      - $ref: '#/components/parameters/timezone'
+      - $ref: '#/components/parameters/phaseCxOverride'
+      responses:
+        '200':
+          $ref: '#/components/responses/successVoltage'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/entityNotFound'
+        '422':
+          $ref: '#/components/responses/unprocessableEntity'
+  /voltage/circuits/{id}/waveforms:
+    get:
+      tags:
+      - Voltage
+      operationId: getCircuitVoltageWaveform
+      summary: Circuit voltage waveform
+      description: 'Gets voltage waveform for a circuit.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/accept'
+      - $ref: '#/components/parameters/circuitId'
+      - $ref: '#/components/parameters/startTime'
+      - $ref: '#/components/parameters/endTime'
+      - $ref: '#/components/parameters/timestampFormat'
+      - $ref: '#/components/parameters/timezone'
+      responses:
+        '200':
+          $ref: '#/components/responses/successWaveform'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/entityNotFound'
+        '422':
+          $ref: '#/components/responses/unprocessableEntity'
+components:
+  parameters:
+    interval:
+      in: query
+      name: interval
+      description: 'Interval between each data points. Affects the validity of `start_time`, `end_time` query parameters, time resolution and aggregation of results.
+
+
+        For example, given the time range query parameters, `start_time=2020-01-01T12:30:00Z&end_time=2020-01-01T13:00:00Z`:
+
+
+        - `interval=1m`: returns 30 data points at minutely resolution.
+
+        - `interval=15m`: returns 2 data points at 15-minutesly/quarter-hourly resolution.
+
+
+        The ordering of timestamps is not guaranteed.
+
+        '
+      required: true
+      schema:
+        type: string
+        enum:
+        - 1m
+        - 15m
+        - 1h
+        - 1d
+        - 1M
+    accept:
+      in: header
+      name: Accept
+      description: 'Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.
+
+
+        Currently, the supported formats are:
+
+
+        - `application/json`
+
+        - `text/csv`
+
+        '
+      required: false
+      schema:
+        type: string
+        default: application/json
+        enum:
+        - application/json
+        - text/csv
+    intervalScopedStartTime:
+      name: start_time
+      in: query
+      description: "Start of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `start_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `start_time=2020-01-01T12:34:00Z&interval=1m`\n- **VALID**: `start_time=2020-01-01T12:45:00Z&interval=15m`\n- **VALID**: `start_time=2020-01-01T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T08:00:00Z&interval=1d` (UTC)\n  - `start_time=2020-01-01T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `start_time=2020-01-01T12:34:00Z&interval=15m`\n- **NOT VALID**: `start_time=2020-01-01T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T00:00:00Z&interval=1d`\n  - `start_time=2020-01-01T04:00:00+08:00&interval=1d`\n"
+      required: true
+      schema:
+        type: string
+        format: date-time
+    phaseCxOverride:
+      in: query
+      name: override_phase
+      description: '> ⚠️ Warning
+
+        >
+
+        > This query parameter is intended for advanced users troubleshooting potentially incorrect data. Incorrect use of this query parameter can lead to erroneous data.
+
+
+        Overrides the configured phase for this circuit and returns the data as if the circuit was on the specified phase.
+
+
+        When omitted, the circuit will reference the phase based on the current panel configuration.
+
+        '
+      required: false
+      schema:
+        type: string
+        enum:
+        - A
+        - B
+        - C
+    startTime:
+      name: start_time
+      in: query
+      description: 'Start of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.
+
+        '
+      required: true
+      schema:
+        type: string
+        format: date-time
+    intervalScopedEndTime:
+      name: end_time
+      in: query
+      description: "End of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `end_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `end_time=2020-12-31T12:34:00Z&interval=1m`\n- **VALID**: `end_time=2020-12-31T12:45:00Z&interval=15m`\n- **VALID**: `end_time=2020-12-31T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T08:00:00Z&interval=1d` (UTC)\n  - `end_time=2020-12-31T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `end_time=2020-12-31T12:34:00Z&interval=15m`\n- **NOT VALID**: `end_time=2020-12-31T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T00:00:00Z&interval=1d`\n  - `end_time=2020-12-31T04:00:00+08:00&interval=1d`\n"
+      required: true
+      schema:
+        type: string
+        format: date-time
+    endTime:
+      name: end_time
+      in: query
+      description: 'End of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.
+
+        '
+      required: true
+      schema:
+        type: string
+        format: date-time
+    timestampFormat:
+      name: timestamp_format
+      in: query
+      description: 'Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).
+
+        '
+      required: false
+      schema:
+        type: string
+        nullable: true
+        enum:
+        - ISO8601
+    circuitId:
+      in: path
+      name: id
+      description: Circuit ID
+      required: true
+      schema:
+        type: integer
+    timezone:
+      name: timezone
+      in: query
+      description: "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> \uD83D\uDCD8 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+      required: false
+      schema:
+        type: string
+        default: UTC
+        format: zoneid
+      examples:
+        America/New_york:
+          summary: US/Eastern
+          value: America/New_york
+        America/Chicago:
+          summary: US/Central
+          value: America/Chicago
+        America/Denver:
+          summary: US/Mountain
+          value: America/Denver
+        America/Los_angeles:
+          summary: US/Pacific
+          value: America/Los_angeles
+        America/Anchorage:
+          summary: US/Alaska
+          value: America/Anchorage
+        Pacific/Honolulu:
+          summary: US/Hawaii
+          value: Pacific/Honolulu
+    circuitIds:
+      in: query
+      name: ids
+      description: An array of circuit IDs separated by commas.
+      required: true
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: integer
+        minItems: 1
+  schemas:
+    power:
+      type: object
+      properties:
+        real:
+          type: number
+          format: float
+          example: 174.88095092773438
+        apparent:
+          type: number
+          format: float
+          example: 176.09056091308594
+        reactive:
+          type: number
+          format: float
+          example: 20.604335594641007
+    permissionsInvalidError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnauthorizedError
+        message:
+          type: string
+          example: Permissions should be an Array or String. Bad format?
+        code:
+          type: string
+          example: permissions_invalid
+        status:
+          type: integer
+          example: 403
+    successWaveformJSONEpoch:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 12345
+          timestamp:
+            type: integer
+            example: 1546301700000
+          power:
+            $ref: '#/components/schemas/power'
+          waveform-count:
+            type: integer
+            example: 54000
+          waveform:
+            type: array
+            items:
+              type: number
+              format: float
+              example:
+              - 1.6816323725006725
+              - 1.691912207336287
+              - 1.7634643739262401
+              - 2.0815979728467937
+              - 2.01925914968416
+              - 2.2474393828615007
+              - 2.255424915132039
+              - 2.2358133060639034
+              - 2.2509083716154237
+              - 2.2075805075944572
+              - 2.2202027543110034
+              - 2.5741079838558107
+              - 2.5400193604045285
+              - 2.5506322754822577
+              - 2.3271575428365736
+              - 2.312577349324954
+              - 2.307476942962296
+              - 2.3048495601551053
+              - 2.3032009460249583
+              - 2.2647501383087842
+              - 2.274573037004018
+              - 2.515049397152552
+              - 2.364182881759973
+              - 2.3617442512473303
+              - 2.274882164948451
+              - 2.080172504054019
+              - 1.947475137135882
+              - 1.8560451224766439
+              - 1.7780787557601911
+              - 1.756612174304962
+              - 1.831573244184142
+              - 1.9143824788830557
+              - 1.8834707080421822
+              - 1.7528856471708423
+              - 1.5512413866566988
+              - 1.3499560011667882
+              - 1.1837349369978085
+              - 1.0444464914472178
+              - 0.9108750703842077
+              - 0.7979252469415599
+              - 0.83617855056211
+              - 1.0725367020932879
+              - 1.0050993150524334
+              - 0.8595873665145746
+              - 0.825704589519006
+              - 0.5734491751844786
+              - 0.16027403620751102
+              - 0.04084130332289959
+              - -0.18378586495304816
+              - -0.2875377629805058
+              - -0.421181296837176
+              - -0.558697425899723
+              - -0.6472699007375127
+              - -0.7067458613458797
+              - -0.7926994492769381
+              - -0.9260922517098038
+              - -1.1047622666980033
+              - -1.136603059136121
+              - -1.4305498530506782
+              - -1.502450658640214
+              - -1.5106886112786242
+              - -1.486417666150004
+              - -1.382504409988968
+              - -1.5902314281514407
+              - -1.7045310761646988
+              - -1.7779241917879745
+              - -1.7933457865258333
+              - -2.0818727077484027
+              - -2.0461352654464804
+              - -2.2802747074546232
+              - -2.2843961404197444
+              - -2.232309924267156
+              - -2.2341131023695198
+              - -2.2276902016220674
+              - -2.247817296891583
+              - -2.399250478608792
+              - -2.4455150581018756
+              - -2.624820525500354
+              - -2.4472324583176714
+              - -2.409107975067343
+              - -2.275328660343689
+              - -2.268665622457945
+              - -2.2421158311614704
+              - -2.193670159535941
+              - -2.2127325035213516
+              - -2.4894957757750262
+              - -2.4097778205204463
+              - -2.2724437391563015
+              - -2.2988559582814787
+              - -2.078987581840522
+              - -1.9391460838780858
+              - -1.8550661490791072
+              - -1.7248933952806738
+              - -1.7368288047431975
+              - -1.864545731507576
+              - -1.904267444044308
+              - -1.8791259250191956
+              - -1.7383228549011278
+              - -1.5832676558614764
+              - -1.3836498211473156
+              - -1.1950572085837905
+              - -1.0176511379193869
+              - -0.8846688000749907
+              - -0.8069926758374919
+              - -0.8660702503664766
+              - -1.0277679128823252
+              - -0.96176960854703
+              - -0.848208387352031
+              - -0.6940788832016125
+              - -0.5546703179017527
+              - -0.18365534284372842
+              - 0.0024780927867371627
+              - 0.19732177922986338
+              - 0.3207644619761254
+              - 0.38866385198956266
+              - 0.495245895677499
+              - 0.5653142481341717
+              - 0.6269419746643621
+              - 0.9294513055589846
+              - 0.9163550285408917
+              - 1.0411870341178826
+              - 1.140168266521755
+              - 1.3767393785457784
+              - 1.3692243963284056
+              - 1.426423097352739
+              - 1.4825708657262453
+              - 1.4637284939105655
+              - 1.6108839385662463
+    permissionDeniedError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnauthorizedError
+        message:
+          type: string
+          example: Permission denied
+        code:
+          type: string
+          example: permission_denied
+        status:
+          type: integer
+          example: 403
+    entityNotFoundError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: EntityNotFoundError
+        message:
+          type: string
+          example: One or more entity with given IDs does not exist in your account.
+        status:
+          type: integer
+          example: 404
+        invalidIds:
+          type: array
+          items:
+            type: integer
+          example:
+          - 1
+          - 2
+          - 3
+    unauthorizedError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnauthorizedError
+        message:
+          type: string
+          example: No authorization token was found
+        code:
+          type: string
+          example: credentials_required
+        status:
+          type: integer
+          example: 401
+    successWaveformCSVEpoch:
+      type: string
+      example: 'id,timestamp,power,waveform-count,waveform
+
+        12345,1546301700000,"{\"real\":174.88095092773438,\"apparent\":176.09056091308594,\"reactive\":20.604335594641007}",54000,"1.6816323725006725,1.691912207336287,1.7634643739262401,2.0815979728467937,2.01925914968416,2.2474393828615007,2.255424915132039,2.2358133060639034,2.2509083716154237,2.2075805075944572,2.2202027543110034,2.5741079838558107,2.5400193604045285,2.5506322754822577,2.3271575428365736,2.312577349324954,2.307476942962296,2.3048495601551053,2.3032009460249583,2.2647501383087842,2.274573037004018,2.515049397152552,2.364182881759973,2.3617442512473303,2.274882164948451,2.080172504054019,1.947475137135882,1.8560451224766439,1.7780787557601911,1.756612174304962,1.831573244184142,1.9143824788830557,1.8834707080421822,1.7528856471708423,1.5512413866566988,1.3499560011667882,1.1837349369978085,1.0444464914472178,0.9108750703842077,0.7979252469415599,0.83617855056211,1.0725367020932879,1.0050993150524334,0.8595873665145746,0.825704589519006,0.5734491751844786,0.16027403620751102,0.04084130332289959,-0.18378586495304816,-0.2875377629805058,-0.421181296837176,-0.558697425899723,-0.6472699007375127,-0.7067458613458797,-0.7926994492769381,-0.9260922517098038,-1.1047622666980033,-1.136603059136121,-1.4305498530506782,-1.502450658640214,-1.5106886112786242,-1.486417666150004,-1.382504409988968,-1.5902314281514407,-1.7045310761646988,-1.7779241917879745,-1.7933457865258333,-2.0818727077484027,-2.0461352654464804,-2.2802747074546232,-2.2843961404197444,-2.232309924267156,-2.2341131023695198,-2.2276902016220674,-2.247817296891583,-2.399250478608792,-2.4455150581018756,-2.624820525500354,-2.4472324583176714,-2.409107975067343,-2.275328660343689,-2.268665622457945,-2.2421158311614704,-2.193670159535941,-2.2127325035213516,-2.4894957757750262,-2.4097778205204463,-2.2724437391563015,-2.2988559582814787,-2.078987581840522,-1.9391460838780858,-1.8550661490791072,-1.7248933952806738,-1.7368288047431975,-1.864545731507576,-1.904267444044308,-1.8791259250191956,-1.7383228549011278,-1.5832676558614764,-1.3836498211473156,-1.1950572085837905,-1.0176511379193869,-0.8846688000749907,-0.8069926758374919,-0.8660702503664766,-1.0277679128823252,-0.96176960854703,-0.848208387352031,-0.6940788832016125,-0.5546703179017527,-0.18365534284372842,0.0024780927867371627,0.19732177922986338,0.3207644619761254,0.38866385198956266,0.495245895677499,0.5653142481341717,0.6269419746643621,0.9294513055589846,0.9163550285408917,1.0411870341178826,1.140168266521755,1.3767393785457784,1.3692243963284056,1.426423097352739,1.4825708657262453,1.4637284939105655,1.6108839385662463"
+
+        '
+    unprocessableEntityError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnprocessableEntityError
+        message:
+          type: string
+          example: Validation error
+        status:
+          type: integer
+          example: 422
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/validationError'
+    successWaveformCSVISO8601:
+      type: string
+      example: 'id,timestamp,power,waveform-count,waveform
+
+        12345,2020-01-01T00:15:00Z,"{\"real\":174.88095092773438,\"apparent\":176.09056091308594,\"reactive\":20.604335594641007}",54000,"1.6816323725006725,1.691912207336287,1.7634643739262401,2.0815979728467937,2.01925914968416,2.2474393828615007,2.255424915132039,2.2358133060639034,2.2509083716154237,2.2075805075944572,2.2202027543110034,2.5741079838558107,2.5400193604045285,2.5506322754822577,2.3271575428365736,2.312577349324954,2.307476942962296,2.3048495601551053,2.3032009460249583,2.2647501383087842,2.274573037004018,2.515049397152552,2.364182881759973,2.3617442512473303,2.274882164948451,2.080172504054019,1.947475137135882,1.8560451224766439,1.7780787557601911,1.756612174304962,1.831573244184142,1.9143824788830557,1.8834707080421822,1.7528856471708423,1.5512413866566988,1.3499560011667882,1.1837349369978085,1.0444464914472178,0.9108750703842077,0.7979252469415599,0.83617855056211,1.0725367020932879,1.0050993150524334,0.8595873665145746,0.825704589519006,0.5734491751844786,0.16027403620751102,0.04084130332289959,-0.18378586495304816,-0.2875377629805058,-0.421181296837176,-0.558697425899723,-0.6472699007375127,-0.7067458613458797,-0.7926994492769381,-0.9260922517098038,-1.1047622666980033,-1.136603059136121,-1.4305498530506782,-1.502450658640214,-1.5106886112786242,-1.486417666150004,-1.382504409988968,-1.5902314281514407,-1.7045310761646988,-1.7779241917879745,-1.7933457865258333,-2.0818727077484027,-2.0461352654464804,-2.2802747074546232,-2.2843961404197444,-2.232309924267156,-2.2341131023695198,-2.2276902016220674,-2.247817296891583,-2.399250478608792,-2.4455150581018756,-2.624820525500354,-2.4472324583176714,-2.409107975067343,-2.275328660343689,-2.268665622457945,-2.2421158311614704,-2.193670159535941,-2.2127325035213516,-2.4894957757750262,-2.4097778205204463,-2.2724437391563015,-2.2988559582814787,-2.078987581840522,-1.9391460838780858,-1.8550661490791072,-1.7248933952806738,-1.7368288047431975,-1.864545731507576,-1.904267444044308,-1.8791259250191956,-1.7383228549011278,-1.5832676558614764,-1.3836498211473156,-1.1950572085837905,-1.0176511379193869,-0.8846688000749907,-0.8069926758374919,-0.8660702503664766,-1.0277679128823252,-0.96176960854703,-0.848208387352031,-0.6940788832016125,-0.5546703179017527,-0.18365534284372842,0.0024780927867371627,0.19732177922986338,0.3207644619761254,0.38866385198956266,0.495245895677499,0.5653142481341717,0.6269419746643621,0.9294513055589846,0.9163550285408917,1.0411870341178826,1.140168266521755,1.3767393785457784,1.3692243963284056,1.426423097352739,1.4825708657262453,1.4637284939105655,1.6108839385662463"
+
+        '
+    validationError:
+      type: object
+      properties:
+        location:
+          type: string
+          example: query
+        msg:
+          type: string
+          example: must be in ISO 8601 format
+        param:
+          type: string
+          example: start_time
+        value:
+          type: string
+          example: 1:15PM 10/13/1999
+    successWaveformJSONISO8601:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 12345
+          timestamp:
+            type: string
+            format: date-time
+            example: '2020-01-01T00:15:00Z'
+          power:
+            $ref: '#/components/schemas/power'
+          waveform-count:
+            type: integer
+            example: 54000
+          waveform:
+            type: array
+            items:
+              type: number
+              format: float
+              example:
+              - 1.6816323725006725
+              - 1.691912207336287
+              - 1.7634643739262401
+              - 2.0815979728467937
+              - 2.01925914968416
+              - 2.2474393828615007
+              - 2.255424915132039
+              - 2.2358133060639034
+              - 2.2509083716154237
+              - 2.2075805075944572
+              - 2.2202027543110034
+              - 2.5741079838558107
+              - 2.5400193604045285
+              - 2.5506322754822577
+              - 2.3271575428365736
+              - 2.312577349324954
+              - 2.307476942962296
+              - 2.3048495601551053
+              - 2.3032009460249583
+              - 2.2647501383087842
+              - 2.274573037004018
+              - 2.515049397152552
+              - 2.364182881759973
+              - 2.3617442512473303
+              - 2.274882164948451
+              - 2.080172504054019
+              - 1.947475137135882
+              - 1.8560451224766439
+              - 1.7780787557601911
+              - 1.756612174304962
+              - 1.831573244184142
+              - 1.9143824788830557
+              - 1.8834707080421822
+              - 1.7528856471708423
+              - 1.5512413866566988
+              - 1.3499560011667882
+              - 1.1837349369978085
+              - 1.0444464914472178
+              - 0.9108750703842077
+              - 0.7979252469415599
+              - 0.83617855056211
+              - 1.0725367020932879
+              - 1.0050993150524334
+              - 0.8595873665145746
+              - 0.825704589519006
+              - 0.5734491751844786
+              - 0.16027403620751102
+              - 0.04084130332289959
+              - -0.18378586495304816
+              - -0.2875377629805058
+              - -0.421181296837176
+              - -0.558697425899723
+              - -0.6472699007375127
+              - -0.7067458613458797
+              - -0.7926994492769381
+              - -0.9260922517098038
+              - -1.1047622666980033
+              - -1.136603059136121
+              - -1.4305498530506782
+              - -1.502450658640214
+              - -1.5106886112786242
+              - -1.486417666150004
+              - -1.382504409988968
+              - -1.5902314281514407
+              - -1.7045310761646988
+              - -1.7779241917879745
+              - -1.7933457865258333
+              - -2.0818727077484027
+              - -2.0461352654464804
+              - -2.2802747074546232
+              - -2.2843961404197444
+              - -2.232309924267156
+              - -2.2341131023695198
+              - -2.2276902016220674
+              - -2.247817296891583
+              - -2.399250478608792
+              - -2.4455150581018756
+              - -2.624820525500354
+              - -2.4472324583176714
+              - -2.409107975067343
+              - -2.275328660343689
+              - -2.268665622457945
+              - -2.2421158311614704
+              - -2.193670159535941
+              - -2.2127325035213516
+              - -2.4894957757750262
+              - -2.4097778205204463
+              - -2.2724437391563015
+              - -2.2988559582814787
+              - -2.078987581840522
+              - -1.9391460838780858
+              - -1.8550661490791072
+              - -1.7248933952806738
+              - -1.7368288047431975
+              - -1.864545731507576
+              - -1.904267444044308
+              - -1.8791259250191956
+              - -1.7383228549011278
+              - -1.5832676558614764
+              - -1.3836498211473156
+              - -1.1950572085837905
+              - -1.0176511379193869
+              - -0.8846688000749907
+              - -0.8069926758374919
+              - -0.8660702503664766
+              - -1.0277679128823252
+              - -0.96176960854703
+              - -0.848208387352031
+              - -0.6940788832016125
+              - -0.5546703179017527
+              - -0.18365534284372842
+              - 0.0024780927867371627
+              - 0.19732177922986338
+              - 0.3207644619761254
+              - 0.38866385198956266
+              - 0.495245895677499
+              - 0.5653142481341717
+              - 0.6269419746643621
+              - 0.9294513055589846
+              - 0.9163550285408917
+              - 1.0411870341178826
+              - 1.140168266521755
+              - 1.3767393785457784
+              - 1.3692243963284056
+              - 1.426423097352739
+              - 1.4825708657262453
+              - 1.4637284939105655
+              - 1.6108839385662463
+  responses:
+    successVoltage:
+      description: Voltage data for given time range. The ordering of timestamps is not guaranteed.
+    unprocessableEntity:
+      description: One or more validations for request has failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/unprocessableEntityError'
+    successWaveform:
+      description: Waveform data for given time range.
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/successWaveformJSONEpoch'
+            - $ref: '#/components/schemas/successWaveformJSONISO8601'
+        text/csv:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/successWaveformCSVEpoch'
+            - $ref: '#/components/schemas/successWaveformCSVISO8601'
+    forbidden:
+      description: Request to resource is forbidden due to insufficient permissions.
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/permissionDeniedError'
+            - $ref: '#/components/schemas/permissionsInvalidError'
+    entityNotFound:
+      description: Resource with given ID cannot be found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/entityNotFoundError'
+    unauthorized:
+      description: 'Request to resource is unauthorized. This is likely due to missing access token in the `Authorization` header or an invalid token signature usually as a result of attempted token forgery by an unauthorized third-party.
+
+        '
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/unauthorizedError'
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://auth.verdigris.co/oauth/token
+          scopes: {}

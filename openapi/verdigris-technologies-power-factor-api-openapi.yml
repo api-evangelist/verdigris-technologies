@@ -1,0 +1,588 @@
+openapi: 3.1.0
+info:
+  title: Data Control Power Factor API
+  description: Microservice that serves insightful power and energy data
+  version: '1.1'
+  contact:
+    name: Verdigris Support
+    email: support@verdigris.co
+    url: https://docs.verdigris.co/
+  termsOfService: https://verdigris.co/terms
+servers:
+- url: https://api.verdigris.co/data/v4
+security:
+- oauth2: []
+tags:
+- name: Power Factor
+  description: Endpoints that return power factor data
+paths:
+  /power-factor/breakers:
+    get:
+      tags:
+      - Power Factor
+      operationId: getBatchBreakerPowerFactor
+      summary: Batch breaker power factor
+      description: 'Gets average power factor data for multiple breakers in a single batch request. The power factor can range between -1 to 1 (a negative power factor may indicate a reverse current flow from sources such as solar panels or battery banks).
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/accept'
+      - $ref: '#/components/parameters/breakerIds'
+      - $ref: '#/components/parameters/interval'
+      - $ref: '#/components/parameters/intervalScopedStartTime'
+      - $ref: '#/components/parameters/intervalScopedEndTime'
+      - $ref: '#/components/parameters/timestampFormat'
+      - $ref: '#/components/parameters/timezone'
+      responses:
+        '200':
+          $ref: '#/components/responses/successPowerFactor'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/entityNotFound'
+        '422':
+          $ref: '#/components/responses/unprocessableEntity'
+  /power-factor/circuits:
+    get:
+      tags:
+      - Power Factor
+      operationId: getBatchCircuitPowerFactor
+      summary: Batch circuit power factor
+      description: 'Gets average power factor data for multiple circuits in a single batch request. The power factor can range between -1 to 1 (a negative power factor may indicate a reverse current flow from sources such as solar panels or battery banks).
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/accept'
+      - $ref: '#/components/parameters/circuitIds'
+      - $ref: '#/components/parameters/interval'
+      - $ref: '#/components/parameters/intervalScopedStartTime'
+      - $ref: '#/components/parameters/intervalScopedEndTime'
+      - $ref: '#/components/parameters/timestampFormat'
+      - $ref: '#/components/parameters/timezone'
+      - $ref: '#/components/parameters/phaseCxOverride'
+      - $ref: '#/components/parameters/reverseCxOverride'
+      responses:
+        '200':
+          $ref: '#/components/responses/successPowerFactor'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/entityNotFound'
+        '422':
+          $ref: '#/components/responses/unprocessableEntity'
+  /power-factor/panels:
+    get:
+      tags:
+      - Power Factor
+      operationId: getBatchPanelPowerFactor
+      summary: Batch panel power factor
+      description: 'Gets average power factor data for multiple panels in a single batch request. The power factor can range between -1 to 1 (a negative power factor may indicate a reverse current flow from sources such as solar panels or battery banks).
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/accept'
+      - $ref: '#/components/parameters/panelIds'
+      - $ref: '#/components/parameters/interval'
+      - $ref: '#/components/parameters/intervalScopedStartTime'
+      - $ref: '#/components/parameters/intervalScopedEndTime'
+      - $ref: '#/components/parameters/timestampFormat'
+      - $ref: '#/components/parameters/timezone'
+      responses:
+        '200':
+          $ref: '#/components/responses/successPowerFactor'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/entityNotFound'
+        '422':
+          $ref: '#/components/responses/unprocessableEntity'
+  /power-factor/breakers/{id}:
+    get:
+      tags:
+      - Power Factor
+      operationId: getBreakerPowerFactor
+      summary: Breaker power factor
+      description: 'Gets average power factor data for a breaker. The power factor can range between -1 to 1 (a negative power factor may indicate a reverse current flow from sources such as solar panels or battery banks).
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/accept'
+      - $ref: '#/components/parameters/breakerId'
+      - $ref: '#/components/parameters/interval'
+      - $ref: '#/components/parameters/intervalScopedStartTime'
+      - $ref: '#/components/parameters/intervalScopedEndTime'
+      - $ref: '#/components/parameters/timestampFormat'
+      - $ref: '#/components/parameters/timezone'
+      responses:
+        '200':
+          $ref: '#/components/responses/successPowerFactor'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/entityNotFound'
+        '422':
+          $ref: '#/components/responses/unprocessableEntity'
+  /power-factor/circuits/{id}:
+    get:
+      tags:
+      - Power Factor
+      operationId: getCircuitPowerFactor
+      summary: Circuit power factor
+      description: 'Gets average power factor data for a circuit. The power factor can range between -1 to 1 (a negative power factor may indicate a reverse current flow from sources such as solar panels or battery banks).
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/accept'
+      - $ref: '#/components/parameters/circuitId'
+      - $ref: '#/components/parameters/interval'
+      - $ref: '#/components/parameters/intervalScopedStartTime'
+      - $ref: '#/components/parameters/intervalScopedEndTime'
+      - $ref: '#/components/parameters/timestampFormat'
+      - $ref: '#/components/parameters/timezone'
+      - $ref: '#/components/parameters/phaseCxOverride'
+      - $ref: '#/components/parameters/reverseCxOverride'
+      responses:
+        '200':
+          $ref: '#/components/responses/successPowerFactor'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/entityNotFound'
+        '422':
+          $ref: '#/components/responses/unprocessableEntity'
+  /power-factor/panels/{id}:
+    get:
+      tags:
+      - Power Factor
+      operationId: getPanelPowerFactor
+      summary: Panel power factor
+      description: 'Gets average power factor data for a panel. The power factor can range between -1 to 1 (a negative power factor may indicate a reverse current flow from sources such as solar panels or battery banks).
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/accept'
+      - $ref: '#/components/parameters/panelId'
+      - $ref: '#/components/parameters/interval'
+      - $ref: '#/components/parameters/intervalScopedStartTime'
+      - $ref: '#/components/parameters/intervalScopedEndTime'
+      - $ref: '#/components/parameters/timestampFormat'
+      - $ref: '#/components/parameters/timezone'
+      responses:
+        '200':
+          $ref: '#/components/responses/successPowerFactor'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/entityNotFound'
+        '422':
+          $ref: '#/components/responses/unprocessableEntity'
+components:
+  parameters:
+    interval:
+      in: query
+      name: interval
+      description: 'Interval between each data points. Affects the validity of `start_time`, `end_time` query parameters, time resolution and aggregation of results.
+
+
+        For example, given the time range query parameters, `start_time=2020-01-01T12:30:00Z&end_time=2020-01-01T13:00:00Z`:
+
+
+        - `interval=1m`: returns 30 data points at minutely resolution.
+
+        - `interval=15m`: returns 2 data points at 15-minutesly/quarter-hourly resolution.
+
+
+        The ordering of timestamps is not guaranteed.
+
+        '
+      required: true
+      schema:
+        type: string
+        enum:
+        - 1m
+        - 15m
+        - 1h
+        - 1d
+        - 1M
+    accept:
+      in: header
+      name: Accept
+      description: 'Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.
+
+
+        Currently, the supported formats are:
+
+
+        - `application/json`
+
+        - `text/csv`
+
+        '
+      required: false
+      schema:
+        type: string
+        default: application/json
+        enum:
+        - application/json
+        - text/csv
+    intervalScopedStartTime:
+      name: start_time
+      in: query
+      description: "Start of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `start_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `start_time=2020-01-01T12:34:00Z&interval=1m`\n- **VALID**: `start_time=2020-01-01T12:45:00Z&interval=15m`\n- **VALID**: `start_time=2020-01-01T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T08:00:00Z&interval=1d` (UTC)\n  - `start_time=2020-01-01T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `start_time=2020-01-01T12:34:00Z&interval=15m`\n- **NOT VALID**: `start_time=2020-01-01T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T00:00:00Z&interval=1d`\n  - `start_time=2020-01-01T04:00:00+08:00&interval=1d`\n"
+      required: true
+      schema:
+        type: string
+        format: date-time
+    phaseCxOverride:
+      in: query
+      name: override_phase
+      description: '> ⚠️ Warning
+
+        >
+
+        > This query parameter is intended for advanced users troubleshooting potentially incorrect data. Incorrect use of this query parameter can lead to erroneous data.
+
+
+        Overrides the configured phase for this circuit and returns the data as if the circuit was on the specified phase.
+
+
+        When omitted, the circuit will reference the phase based on the current panel configuration.
+
+        '
+      required: false
+      schema:
+        type: string
+        enum:
+        - A
+        - B
+        - C
+    intervalScopedEndTime:
+      name: end_time
+      in: query
+      description: "End of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `end_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `end_time=2020-12-31T12:34:00Z&interval=1m`\n- **VALID**: `end_time=2020-12-31T12:45:00Z&interval=15m`\n- **VALID**: `end_time=2020-12-31T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T08:00:00Z&interval=1d` (UTC)\n  - `end_time=2020-12-31T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `end_time=2020-12-31T12:34:00Z&interval=15m`\n- **NOT VALID**: `end_time=2020-12-31T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T00:00:00Z&interval=1d`\n  - `end_time=2020-12-31T04:00:00+08:00&interval=1d`\n"
+      required: true
+      schema:
+        type: string
+        format: date-time
+    panelId:
+      in: path
+      name: id
+      description: Panel ID
+      required: true
+      schema:
+        type: integer
+    breakerId:
+      in: path
+      name: id
+      description: Breaker ID
+      required: true
+      schema:
+        type: integer
+    timestampFormat:
+      name: timestamp_format
+      in: query
+      description: 'Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).
+
+        '
+      required: false
+      schema:
+        type: string
+        nullable: true
+        enum:
+        - ISO8601
+    reverseCxOverride:
+      in: query
+      name: override_sensor_orientation
+      description: '> ⚠️ Warning
+
+        >
+
+        > This query parameter is intended for advanced users troubleshooting potentially incorrect data. Incorrect use of this query parameter can lead to erroneous data.
+
+
+        Overrides the configured sensor orientation to return circuit data as if the CT was clamped upside down and flip positive values to negative and vice versa.
+
+
+        When omitted, the API will compute the data by referencing the sensor orientation based on the current panel configuration.
+
+        '
+      required: false
+      schema:
+        type: string
+        enum:
+        - normal
+        - reversed
+    breakerIds:
+      in: query
+      name: ids
+      description: An array of breaker IDs separated by commas.
+      required: true
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: integer
+        minItems: 1
+    panelIds:
+      in: query
+      name: ids
+      description: An array of panel IDs separated by commas.
+      required: true
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: integer
+        minItems: 1
+    circuitId:
+      in: path
+      name: id
+      description: Circuit ID
+      required: true
+      schema:
+        type: integer
+    timezone:
+      name: timezone
+      in: query
+      description: "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> \uD83D\uDCD8 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+      required: false
+      schema:
+        type: string
+        default: UTC
+        format: zoneid
+      examples:
+        America/New_york:
+          summary: US/Eastern
+          value: America/New_york
+        America/Chicago:
+          summary: US/Central
+          value: America/Chicago
+        America/Denver:
+          summary: US/Mountain
+          value: America/Denver
+        America/Los_angeles:
+          summary: US/Pacific
+          value: America/Los_angeles
+        America/Anchorage:
+          summary: US/Alaska
+          value: America/Anchorage
+        Pacific/Honolulu:
+          summary: US/Hawaii
+          value: Pacific/Honolulu
+    circuitIds:
+      in: query
+      name: ids
+      description: An array of circuit IDs separated by commas.
+      required: true
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: integer
+        minItems: 1
+  schemas:
+    permissionsInvalidError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnauthorizedError
+        message:
+          type: string
+          example: Permissions should be an Array or String. Bad format?
+        code:
+          type: string
+          example: permissions_invalid
+        status:
+          type: integer
+          example: 403
+    successPowerFactorJSONISO8601:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 12345
+          timestamp:
+            type: string
+            format: date-time
+            example: '2020-01-01T00:15:00Z'
+          power-factor:
+            type: number
+            format: float
+            example: 0.97233876
+    successPowerFactorCSVEpoch:
+      type: string
+      example: 'id,timestamp,power
+
+        12345,1546301700000,0.97233876
+
+        '
+    permissionDeniedError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnauthorizedError
+        message:
+          type: string
+          example: Permission denied
+        code:
+          type: string
+          example: permission_denied
+        status:
+          type: integer
+          example: 403
+    entityNotFoundError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: EntityNotFoundError
+        message:
+          type: string
+          example: One or more entity with given IDs does not exist in your account.
+        status:
+          type: integer
+          example: 404
+        invalidIds:
+          type: array
+          items:
+            type: integer
+          example:
+          - 1
+          - 2
+          - 3
+    successPowerFactorCSVISO8601:
+      type: string
+      example: 'id,timestamp,power
+
+        12345,2020-01-01T00:15:00Z,0.97233876
+
+        '
+    unauthorizedError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnauthorizedError
+        message:
+          type: string
+          example: No authorization token was found
+        code:
+          type: string
+          example: credentials_required
+        status:
+          type: integer
+          example: 401
+    unprocessableEntityError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnprocessableEntityError
+        message:
+          type: string
+          example: Validation error
+        status:
+          type: integer
+          example: 422
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/validationError'
+    successPowerFactorJSONEpoch:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 12345
+          timestamp:
+            type: integer
+            example: 1546301700000
+          power-factor:
+            type: number
+            format: float
+            example: 0.97233876
+    validationError:
+      type: object
+      properties:
+        location:
+          type: string
+          example: query
+        msg:
+          type: string
+          example: must be in ISO 8601 format
+        param:
+          type: string
+          example: start_time
+        value:
+          type: string
+          example: 1:15PM 10/13/1999
+  responses:
+    successPowerFactor:
+      description: Average power factor data for given time range. The ordering of timestamps is not guaranteed.
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/successPowerFactorJSONEpoch'
+            - $ref: '#/components/schemas/successPowerFactorJSONISO8601'
+        text/csv:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/successPowerFactorCSVEpoch'
+            - $ref: '#/components/schemas/successPowerFactorCSVISO8601'
+    unprocessableEntity:
+      description: One or more validations for request has failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/unprocessableEntityError'
+    forbidden:
+      description: Request to resource is forbidden due to insufficient permissions.
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/permissionDeniedError'
+            - $ref: '#/components/schemas/permissionsInvalidError'
+    entityNotFound:
+      description: Resource with given ID cannot be found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/entityNotFoundError'
+    unauthorized:
+      description: 'Request to resource is unauthorized. This is likely due to missing access token in the `Authorization` header or an invalid token signature usually as a result of attempted token forgery by an unauthorized third-party.
+
+        '
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/unauthorizedError'
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://auth.verdigris.co/oauth/token
+          scopes: {}

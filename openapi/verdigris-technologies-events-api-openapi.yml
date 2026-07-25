@@ -1,0 +1,357 @@
+openapi: 3.1.0
+info:
+  title: Data Control Events API
+  description: Microservice that serves insightful power and energy data
+  version: '1.1'
+  contact:
+    name: Verdigris Support
+    email: support@verdigris.co
+    url: https://docs.verdigris.co/
+  termsOfService: https://verdigris.co/terms
+servers:
+- url: https://api.verdigris.co/data/v4
+security:
+- oauth2: []
+tags:
+- name: Events
+paths:
+  /events/pro-capture/buildings/{buildingId}/panels:
+    get:
+      tags:
+      - Events
+      operationId: getBuildingProCaptureEvents
+      summary: Building Pro Capture events
+      description: 'Gets Pro Capture event summary for all panels in the specified building.
+
+        '
+      parameters:
+      - name: buildingId
+        in: path
+        description: Building ID
+        required: true
+        schema:
+          type: integer
+      - $ref: '#/components/parameters/accept'
+      - $ref: '#/components/parameters/startTime'
+      - $ref: '#/components/parameters/endTime'
+      - $ref: '#/components/parameters/timestampFormat'
+      - $ref: '#/components/parameters/timezone'
+      responses:
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/entityNotFound'
+        '422':
+          $ref: '#/components/responses/unprocessableEntity'
+  /events/pro-capture/buildings/{buildingId}/panels/{panelId}:
+    get:
+      tags:
+      - Events
+      operationId: getPanelProCaptureEvents
+      summary: Panel Pro Capture events
+      description: 'Gets Pro Capture event summary for the building.
+
+        '
+      parameters:
+      - name: buildingId
+        in: path
+        description: Building ID
+        required: true
+        schema:
+          type: integer
+      - name: panelId
+        in: path
+        description: Panel ID
+        required: true
+        schema:
+          type: integer
+      - $ref: '#/components/parameters/accept'
+      - $ref: '#/components/parameters/startTime'
+      - $ref: '#/components/parameters/endTime'
+      - $ref: '#/components/parameters/timestampFormat'
+      - $ref: '#/components/parameters/timezone'
+      responses:
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/entityNotFound'
+        '422':
+          $ref: '#/components/responses/unprocessableEntity'
+  /events/pro-capture/buildings/{buildingId}/panels/{panelId}/waveforms:
+    get:
+      tags:
+      - Events
+      operationId: getPanelProCaptureWaveforms
+      summary: Panel Pro Capture waveforms
+      description: 'Gets Pro Capture waveforms that
+
+        '
+      parameters:
+      - name: buildingId
+        in: path
+        description: Building ID
+        required: true
+        schema:
+          type: integer
+      - name: panelId
+        in: path
+        description: Panel ID
+        required: true
+        schema:
+          type: integer
+      - $ref: '#/components/parameters/accept'
+      - $ref: '#/components/parameters/startTime'
+      - $ref: '#/components/parameters/endTime'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/eventTimestamp'
+      - $ref: '#/components/parameters/timestampFormat'
+      - $ref: '#/components/parameters/timezone'
+      responses:
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/entityNotFound'
+        '422':
+          $ref: '#/components/responses/unprocessableEntity'
+components:
+  responses:
+    unprocessableEntity:
+      description: One or more validations for request has failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/unprocessableEntityError'
+    forbidden:
+      description: Request to resource is forbidden due to insufficient permissions.
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/permissionDeniedError'
+            - $ref: '#/components/schemas/permissionsInvalidError'
+    entityNotFound:
+      description: Resource with given ID cannot be found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/entityNotFoundError'
+    unauthorized:
+      description: 'Request to resource is unauthorized. This is likely due to missing access token in the `Authorization` header or an invalid token signature usually as a result of attempted token forgery by an unauthorized third-party.
+
+        '
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/unauthorizedError'
+  schemas:
+    unprocessableEntityError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnprocessableEntityError
+        message:
+          type: string
+          example: Validation error
+        status:
+          type: integer
+          example: 422
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/validationError'
+    validationError:
+      type: object
+      properties:
+        location:
+          type: string
+          example: query
+        msg:
+          type: string
+          example: must be in ISO 8601 format
+        param:
+          type: string
+          example: start_time
+        value:
+          type: string
+          example: 1:15PM 10/13/1999
+    entityNotFoundError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: EntityNotFoundError
+        message:
+          type: string
+          example: One or more entity with given IDs does not exist in your account.
+        status:
+          type: integer
+          example: 404
+        invalidIds:
+          type: array
+          items:
+            type: integer
+          example:
+          - 1
+          - 2
+          - 3
+    permissionsInvalidError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnauthorizedError
+        message:
+          type: string
+          example: Permissions should be an Array or String. Bad format?
+        code:
+          type: string
+          example: permissions_invalid
+        status:
+          type: integer
+          example: 403
+    permissionDeniedError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnauthorizedError
+        message:
+          type: string
+          example: Permission denied
+        code:
+          type: string
+          example: permission_denied
+        status:
+          type: integer
+          example: 403
+    unauthorizedError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnauthorizedError
+        message:
+          type: string
+          example: No authorization token was found
+        code:
+          type: string
+          example: credentials_required
+        status:
+          type: integer
+          example: 401
+  parameters:
+    startTime:
+      name: start_time
+      in: query
+      description: 'Start of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.
+
+        '
+      required: true
+      schema:
+        type: string
+        format: date-time
+    limit:
+      name: limit
+      in: query
+      description: 'Caps the response to the most recent `limit` events in the query time range, ordered by descending timestamp. When omitted, every event in the range is returned. Ignored when `event_timestamp` is supplied, since that already selects a single event.
+
+        '
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+    timestampFormat:
+      name: timestamp_format
+      in: query
+      description: 'Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).
+
+        '
+      required: false
+      schema:
+        type: string
+        nullable: true
+        enum:
+        - ISO8601
+    timezone:
+      name: timezone
+      in: query
+      description: "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> \uD83D\uDCD8 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+      required: false
+      schema:
+        type: string
+        default: UTC
+        format: zoneid
+      examples:
+        America/New_york:
+          summary: US/Eastern
+          value: America/New_york
+        America/Chicago:
+          summary: US/Central
+          value: America/Chicago
+        America/Denver:
+          summary: US/Mountain
+          value: America/Denver
+        America/Los_angeles:
+          summary: US/Pacific
+          value: America/Los_angeles
+        America/Anchorage:
+          summary: US/Alaska
+          value: America/Anchorage
+        Pacific/Honolulu:
+          summary: US/Hawaii
+          value: Pacific/Honolulu
+    accept:
+      in: header
+      name: Accept
+      description: 'Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.
+
+
+        Currently, the supported formats are:
+
+
+        - `application/json`
+
+        - `text/csv`
+
+        '
+      required: false
+      schema:
+        type: string
+        default: application/json
+        enum:
+        - application/json
+        - text/csv
+    endTime:
+      name: end_time
+      in: query
+      description: 'End of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.
+
+        '
+      required: true
+      schema:
+        type: string
+        format: date-time
+    eventTimestamp:
+      name: event_timestamp
+      in: query
+      description: 'Projects the result to the single event at this exact timestamp within the query time range. Accepts an [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) string or an integer [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time) in milliseconds. If no event matches, the response is an empty collection (not a 404). Takes precedence over `limit`.
+
+        '
+      required: false
+      schema:
+        type: string
+        format: date-time
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://auth.verdigris.co/oauth/token
+          scopes: {}
