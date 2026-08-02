@@ -1,0 +1,42 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/verdigris-technologies-data-v4-openapi.json (path structure + id parameters)
+note: >-
+  The Data API exposes energy/power/etc measurements addressed by a physical
+  electrical hierarchy. Entities and relationships are inferred from the URL path
+  templates (/energy/buildings/{id}, /energy/panels/{id}, /energy/circuits/{id},
+  /energy/breakers/{id}) and the buildingId/panelId/circuitId/breakerId parameters.
+entities:
+- name: building
+  id_param: buildingId
+  description: A physical building instrumented with Verdigris sensors; top of the hierarchy.
+- name: panel
+  id_param: panelId
+  description: An electrical panel within a building.
+- name: circuit
+  id_param: circuitId
+  description: A monitored circuit on a panel.
+- name: breaker
+  id_param: breakerId
+  description: A breaker on a panel/circuit.
+relationships:
+- from: building
+  to: panel
+  type: has_many
+  via: buildingId
+- from: panel
+  to: circuit
+  type: has_many
+  via: panelId
+- from: panel
+  to: breaker
+  type: has_many
+  via: panelId
+- from: panel
+  to: building
+  type: belongs_to
+  via: buildingId
+measurements:
+  addressable_at: [building, panel, circuit, breaker]
+  metrics: [energy, power, power-factor, current, voltage, thd, control, weather, forecast, pro-capture-waveform]
+  note: Not every metric is available at every level (e.g. THD is panel-level; weather/forecast/control are building-level).

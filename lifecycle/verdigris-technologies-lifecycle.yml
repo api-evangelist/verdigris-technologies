@@ -1,0 +1,18 @@
+generated: '2026-07-21'
+method: searched
+source: provider docs + openapi/verdigris-technologies-data-v4-openapi.json
+versioning:
+  scheme: uri-path
+  current: data/v4
+  spec_version: '1.1'
+  docs: https://docs.verdigris.co/reference/getting-started-with-your-api
+  note: The Data API is versioned in the URL path (/data/v4); the Core API is at /core/v1.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: No public deprecation policy or RFC 8594 Sunset/Deprecation header support was found.
+sla:
+  url: null
+  note: No public SLA/uptime target published (API is restricted to active customers).
+status_page: null
+deprecated_operations: []

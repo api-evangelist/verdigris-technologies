@@ -1,8 +1,16 @@
 aid: verdigris-technologies
 name: Verdigris Technologies
-description: Verdigris Technologies is a company surfaced as a portfolio company of dcvc and added to
-  the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment
-  pipeline.
+description: >-
+  Verdigris Technologies builds AI-powered building energy intelligence, pairing
+  proprietary current-sensor hardware clamped onto a building's electrical panels
+  with cloud software that monitors every circuit in real time. The Verdigris API
+  exposes that telemetry through OAuth2-secured REST endpoints (the Data API v4):
+  energy, power, voltage, current, power factor, total harmonic distortion,
+  weather, energy forecasts, building controls, and high-resolution Pro Capture
+  waveforms, all queryable at building, panel, circuit, and breaker granularity
+  with batch variants for pulling many entities in a single request. Developers
+  use it to power enterprise data lakes, internal power-monitoring dashboards, and
+  sustainability and energy-optimization applications for smart buildings.
 url: https://raw.githubusercontent.com/api-evangelist/verdigris-technologies/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -10,14 +18,211 @@ x-backed-by:
 - dcvc
 x-tier: stub
 x-tier-reason: portfolio-lead
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-21'
+image: https://verdigris.co/favicon.ico
 tags:
 - Company
-apis: []
+- Energy
+- Energy Management
+- Building Automation
+- Smart Buildings
+- IoT
+- Sustainability
+- Power Monitoring
+- Time Series
+- Analytics
+- Electricity
+apis:
+- aid: verdigris-technologies:verdigris-technologies-control-api
+  name: Verdigris Technologies Control API
+  description: Endpoints that return control data from building management systems (BMS)
+  humanURL: https://docs.verdigris.co/reference/getting-started-with-your-api
+  baseURL: https://api.verdigris.co/data/v4
+  tags:
+  - Control
+  properties:
+  - type: OpenAPI
+    url: openapi/verdigris-technologies-control-api-openapi.yml
+  - type: Documentation
+    url: https://docs.verdigris.co/reference/getting-started-with-your-api
+- aid: verdigris-technologies:verdigris-technologies-current-api
+  name: Verdigris Technologies Current API
+  description: Endpoints that return current data
+  humanURL: https://docs.verdigris.co/reference/getting-started-with-your-api
+  baseURL: https://api.verdigris.co/data/v4
+  tags:
+  - Current
+  properties:
+  - type: OpenAPI
+    url: openapi/verdigris-technologies-current-api-openapi.yml
+  - type: Documentation
+    url: https://docs.verdigris.co/reference/getting-started-with-your-api
+- aid: verdigris-technologies:verdigris-technologies-energy-api
+  name: Verdigris Technologies Energy API
+  description: Endpoints that return energy data
+  humanURL: https://docs.verdigris.co/reference/getting-started-with-your-api
+  baseURL: https://api.verdigris.co/data/v4
+  tags:
+  - Energy
+  properties:
+  - type: OpenAPI
+    url: openapi/verdigris-technologies-energy-api-openapi.yml
+  - type: Documentation
+    url: https://docs.verdigris.co/reference/getting-started-with-your-api
+- aid: verdigris-technologies:verdigris-technologies-events-api
+  name: Verdigris Technologies Events API
+  description: The Events API from Verdigris Technologies — 3 operation(s) for events.
+  humanURL: https://docs.verdigris.co/reference/getting-started-with-your-api
+  baseURL: https://api.verdigris.co/data/v4
+  tags:
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/verdigris-technologies-events-api-openapi.yml
+  - type: Documentation
+    url: https://docs.verdigris.co/reference/getting-started-with-your-api
+- aid: verdigris-technologies:verdigris-technologies-forecast-api
+  name: Verdigris Technologies Forecast API
+  description: The Forecast API from Verdigris Technologies — 1 operation(s) for forecast.
+  humanURL: https://docs.verdigris.co/reference/getting-started-with-your-api
+  baseURL: https://api.verdigris.co/data/v4
+  tags:
+  - Forecast
+  properties:
+  - type: OpenAPI
+    url: openapi/verdigris-technologies-forecast-api-openapi.yml
+  - type: Documentation
+    url: https://docs.verdigris.co/reference/getting-started-with-your-api
+- aid: verdigris-technologies:verdigris-technologies-power-api
+  name: Verdigris Technologies Power API
+  description: Endpoints that return power data
+  humanURL: https://docs.verdigris.co/reference/getting-started-with-your-api
+  baseURL: https://api.verdigris.co/data/v4
+  tags:
+  - Power
+  properties:
+  - type: OpenAPI
+    url: openapi/verdigris-technologies-power-api-openapi.yml
+  - type: Documentation
+    url: https://docs.verdigris.co/reference/getting-started-with-your-api
+- aid: verdigris-technologies:verdigris-technologies-power-factor-api
+  name: Verdigris Technologies Power Factor API
+  description: Endpoints that return power factor data
+  humanURL: https://docs.verdigris.co/reference/getting-started-with-your-api
+  baseURL: https://api.verdigris.co/data/v4
+  tags:
+  - Power Factor
+  properties:
+  - type: OpenAPI
+    url: openapi/verdigris-technologies-power-factor-api-openapi.yml
+  - type: Documentation
+    url: https://docs.verdigris.co/reference/getting-started-with-your-api
+- aid: verdigris-technologies:verdigris-technologies-total-harmonic-distortion-api
+  name: Verdigris Technologies Total Harmonic Distortion API
+  description: Endpoints that return total harmonic distortion data
+  humanURL: https://docs.verdigris.co/reference/getting-started-with-your-api
+  baseURL: https://api.verdigris.co/data/v4
+  tags:
+  - Total Harmonic Distortion
+  properties:
+  - type: OpenAPI
+    url: openapi/verdigris-technologies-total-harmonic-distortion-api-openapi.yml
+  - type: Documentation
+    url: https://docs.verdigris.co/reference/getting-started-with-your-api
+- aid: verdigris-technologies:verdigris-technologies-voltage-api
+  name: Verdigris Technologies Voltage API
+  description: Endpoints that return voltage data
+  humanURL: https://docs.verdigris.co/reference/getting-started-with-your-api
+  baseURL: https://api.verdigris.co/data/v4
+  tags:
+  - Voltage
+  properties:
+  - type: OpenAPI
+    url: openapi/verdigris-technologies-voltage-api-openapi.yml
+  - type: Documentation
+    url: https://docs.verdigris.co/reference/getting-started-with-your-api
+- aid: verdigris-technologies:verdigris-technologies-weather-api
+  name: Verdigris Technologies Weather API
+  description: Endpoints that return weather data
+  humanURL: https://docs.verdigris.co/reference/getting-started-with-your-api
+  baseURL: https://api.verdigris.co/data/v4
+  tags:
+  - Weather
+  properties:
+  - type: OpenAPI
+    url: openapi/verdigris-technologies-weather-api-openapi.yml
+  - type: Documentation
+    url: https://docs.verdigris.co/reference/getting-started-with-your-api
+common:
+- type: TrustCenter
+  url: security/verdigris-technologies-trust-center.yml
+- type: DomainSecurity
+  url: security/verdigris-technologies-domain-security.yml
+- type: OAuthScopes
+  url: scopes/verdigris-technologies-scopes.yml
+- type: DeveloperPortal
+  url: https://docs.verdigris.co
+- type: Documentation
+  url: https://docs.verdigris.co/docs/vedigris-api-overview
+- type: APIReference
+  url: https://docs.verdigris.co/reference
+- type: GettingStarted
+  url: https://docs.verdigris.co/reference/getting-started-with-your-api
+- type: Authentication
+  url: authentication/verdigris-technologies-authentication.yml
+- type: Support
+  url: https://support.verdigris.co
+- type: Blog
+  url: https://verdigris.co/blog
+- type: GitHubOrganization
+  url: https://github.com/VerdigrisTech
+- type: TermsOfService
+  url: https://verdigris.co/terms
+- type: Login
+  url: https://admin.verdigris.co
+- type: LLMsTxt
+  url: llms/verdigris-technologies-llms.txt
+- type: WellKnown
+  url: well-known/verdigris-technologies-well-known.yml
+- type: MCPServer
+  url: mcp/verdigris-technologies-mcp.yml
+- type: Overlay
+  url: overlays/verdigris-technologies-data-v4-overlay.yaml
+- type: Conformance
+  url: conformance/verdigris-technologies-conformance.yml
+- type: Compliance
+  url: https://trust.verdigris.co/
+- type: ErrorCatalog
+  url: errors/verdigris-technologies-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/verdigris-technologies-lifecycle.yml
+- type: Conventions
+  url: conventions/verdigris-technologies-conventions.yml
+- type: DataModel
+  url: data-model/verdigris-technologies-data-model.yml
+- type: AgentSkill
+  url: skills/_index.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+x-enrichment:
+  date: '2026-07-21'
+  status: enriched
+  artifacts_added: 20
+  pass: local-v1

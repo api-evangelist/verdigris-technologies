@@ -1,0 +1,28 @@
+generated: '2026-07-21'
+method: searched
+source: live probes of /.well-known/ across Verdigris hosts
+hosts:
+- host: https://auth.verdigris.co
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: verdigris-technologies-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: verdigris-technologies-oauth-authorization-server.json
+- host: https://api.verdigris.co
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+- host: https://verdigris.co
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+notes:
+- The Verdigris token endpoint (auth.verdigris.co) is an Auth0 tenant and publishes
+  full OIDC / RFC 8414 authorization-server discovery metadata.
+- The API host (api.verdigris.co) exposes no /.well-known/ discovery surface.

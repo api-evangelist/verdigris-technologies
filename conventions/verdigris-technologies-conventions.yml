@@ -1,0 +1,38 @@
+generated: '2026-07-21'
+method: searched
+source: provider docs + openapi/verdigris-technologies-data-v4-openapi.json
+authentication:
+  style: oauth2 client-credentials -> Bearer JWT
+  token_endpoint: https://auth.verdigris.co/oauth/token
+  audience: https://api.verdigris.co/
+  ref: authentication/verdigris-technologies-authentication.yml
+idempotency:
+  supported: false
+  note: The Data API is entirely read-only (HTTP GET); there is no write surface, so no idempotency-key contract.
+pagination:
+  style: time-range + cap
+  params:
+    start_time: ISO 8601 start of query range
+    end_time: ISO 8601 end of query range
+    interval: bucket size, enum 1m/15m/1h/1d/1M
+    limit: caps the response to the most-recent N points/events in the range (integer, min 1)
+  note: Data is retrieved by time range and interval rather than page cursors; batch endpoints accept comma-separated ids.
+content_negotiation:
+  header: Accept
+  media_types:
+  - application/json
+  - text/csv
+  default: application/json
+  note: Most data endpoints can return JSON or CSV based on the Accept header.
+timestamps:
+  timestamp_format: optional ISO8601 rendering via timestampFormat query param (default epoch)
+  timezone: zoneid (default UTC), applied when timestampFormat=ISO8601
+versioning:
+  style: uri-path (/data/v4)
+  ref: lifecycle/verdigris-technologies-lifecycle.yml
+error_envelope:
+  media_type: application/json
+  shape: '{ name, message, status, [code|invalidIds|errors] }'
+  ref: errors/verdigris-technologies-problem-types.yml
+rate_limiting:
+  token_issuance: 20 token requests/hour (429 on exceed); cache and reuse the 1-hour token

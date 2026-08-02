@@ -1,0 +1,16 @@
+generated: '2026-07-21'
+method: generated
+source: openapi/verdigris-technologies-data-v4-openapi.json
+skills:
+- file: verdigris-technologies-building-energy.md
+  name: Pull building energy from Verdigris
+  api: openapi/verdigris-technologies-data-v4-openapi.json
+  operations: [getBuildingEnergy, getBatchBuildingEnergy]
+- file: verdigris-technologies-circuit-power-breakdown.md
+  name: Break down building power to circuits with Verdigris
+  api: openapi/verdigris-technologies-data-v4-openapi.json
+  operations: [getBatchPanelPower, getBatchCircuitPower, getCircuitPower]
+- file: verdigris-technologies-forecast-vs-weather.md
+  name: Compare Verdigris energy forecast against weather
+  api: openapi/verdigris-technologies-data-v4-openapi.json
+  operations: [getBatchBuildingForecast, getBatchWeather]

@@ -1,0 +1,32 @@
+{
+  "provider": "verdigris-technologies",
+  "sources": [
+    "verdigris-technologies-control-api-openapi.yml",
+    "verdigris-technologies-current-api-openapi.yml",
+    "verdigris-technologies-energy-api-openapi.yml",
+    "verdigris-technologies-events-api-openapi.yml",
+    "verdigris-technologies-forecast-api-openapi.yml",
+    "verdigris-technologies-power-api-openapi.yml",
+    "verdigris-technologies-power-factor-api-openapi.yml",
+    "verdigris-technologies-total-harmonic-distortion-api-openapi.yml",
+    "verdigris-technologies-voltage-api-openapi.yml",
+    "verdigris-technologies-weather-api-openapi.yml"
+  ],
+  "outputs": [
+    "verdigris-technologies-control-api-openapi.yml",
+    "verdigris-technologies-current-api-openapi.yml",
+    "verdigris-technologies-energy-api-openapi.yml",
+    "verdigris-technologies-events-api-openapi.yml",
+    "verdigris-technologies-forecast-api-openapi.yml",
+    "verdigris-technologies-power-api-openapi.yml",
+    "verdigris-technologies-power-factor-api-openapi.yml",
+    "verdigris-technologies-total-harmonic-distortion-api-openapi.yml",
+    "verdigris-technologies-voltage-api-openapi.yml",
+    "verdigris-technologies-weather-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

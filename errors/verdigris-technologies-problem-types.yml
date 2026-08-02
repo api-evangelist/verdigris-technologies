@@ -1,0 +1,38 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/verdigris-technologies-data-v4-openapi.json
+format: custom-json
+envelope:
+  media_type: application/json
+  fields:
+    name: string error class name (e.g. UnauthorizedError)
+    message: human-readable description
+    status: integer HTTP status code
+    code: machine token (present on auth errors, e.g. credentials_required)
+    invalidIds: array of offending entity ids (on 404)
+    errors: array of field validation errors (on 422)
+note: >-
+  Errors are NOT RFC 9457 problem+json; Verdigris returns a custom JSON envelope
+  keyed on name/message/status. Values below are the documented examples.
+problems:
+- status: 401
+  name: UnauthorizedError
+  code: credentials_required
+  title: Request is unauthorized
+  detail: No valid OAuth2 bearer token was supplied or it has expired.
+  remediation: Obtain a fresh token from https://auth.verdigris.co/oauth/token and send it in the Authorization header.
+- status: 403
+  name: PermissionDeniedError
+  title: Request is forbidden
+  detail: The authenticated client lacks permission for the requested resource.
+  remediation: Confirm the API key's account has access to the requested building/panel/circuit.
+- status: 404
+  name: EntityNotFoundError
+  title: Resource not found
+  detail: One or more entities with the given IDs do not exist in your account. Offending ids returned in invalidIds[].
+  remediation: Verify the building/panel/circuit/breaker id belongs to your account.
+- status: 422
+  name: UnprocessableEntityError
+  title: Validation error
+  detail: One or more request parameters failed validation. Field-level failures returned in errors[].
+  remediation: Correct the flagged query parameters (time range, interval, ids) and retry.

@@ -1,0 +1,127 @@
+generated: '2026-07-21'
+method: derived
+status: candidate
+source: openapi/verdigris-technologies-data-v4-openapi.json
+note: >-
+  No official hosted Verdigris MCP server was found. This is a derived candidate
+  tool list, one tool per Data API operation, that a generated MCP server would
+  expose. Every source_operation maps to a real operationId in the OpenAPI.
+server:
+  name: verdigris-data-api
+  transport: http
+  auth: oauth2 client_credentials (audience https://api.verdigris.co/)
+tools:
+  - name: get_batch_breaker_energy
+    description: "Batch breaker energy"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchBreakerEnergy
+  - name: get_batch_breaker_power
+    description: "Batch breaker power"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchBreakerPower
+  - name: get_batch_breaker_power_factor
+    description: "Batch breaker power factor"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchBreakerPowerFactor
+  - name: get_batch_building_control
+    description: "Batch building controls"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchBuildingControl
+  - name: get_batch_building_energy
+    description: "Batch building energy"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchBuildingEnergy
+  - name: get_batch_building_forecast
+    description: "Batch building energy forecast"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchBuildingForecast
+  - name: get_batch_building_power
+    description: "Batch building power"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchBuildingPower
+  - name: get_batch_circuit_current
+    description: "Batch circuit current (RMS)"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchCircuitCurrent
+  - name: get_batch_circuit_current_waveform
+    description: "Batch circuit current waveforms"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchCircuitCurrentWaveform
+  - name: get_batch_circuit_energy
+    description: "Batch circuit energy"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchCircuitEnergy
+  - name: get_batch_circuit_power
+    description: "Batch circuit power"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchCircuitPower
+  - name: get_batch_circuit_power_factor
+    description: "Batch circuit power factor"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchCircuitPowerFactor
+  - name: get_batch_circuit_voltage
+    description: "Batch circuit voltage (RMS)"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchCircuitVoltage
+  - name: get_batch_circuit_voltage_waveform
+    description: "Batch circuit voltage waveforms"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchCircuitVoltageWaveform
+  - name: get_batch_panel_energy
+    description: "Batch panel energy"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchPanelEnergy
+  - name: get_batch_panel_power
+    description: "Batch panel power"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchPanelPower
+  - name: get_batch_panel_power_factor
+    description: "Batch panel power factor"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchPanelPowerFactor
+  - name: get_batch_panel_t_h_d
+    description: "Batch panel total harmonic distortion"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchPanelTHD
+  - name: get_batch_weather
+    description: "Batch weather"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBatchWeather
+  - name: get_breaker_energy
+    description: "Breaker energy"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBreakerEnergy
+  - name: get_breaker_power
+    description: "Breaker power"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBreakerPower
+  - name: get_breaker_power_factor
+    description: "Breaker power factor"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBreakerPowerFactor
+  - name: get_building_energy
+    description: "Building energy"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBuildingEnergy
+  - name: get_building_power
+    description: "Building power"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBuildingPower
+  - name: get_building_pro_capture_events
+    description: "Building Pro Capture events"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getBuildingProCaptureEvents
+  - name: get_circuit_current
+    description: "Circuit current (RMS)"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getCircuitCurrent
+  - name: get_circuit_current_waveform
+    description: "Circuit current waveform"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getCircuitCurrentWaveform
+  - name: get_circuit_energy
+    description: "Circuit energy"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getCircuitEnergy
+  - name: get_circuit_power
+    description: "Circuit power"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getCircuitPower
+  - name: get_circuit_power_factor
+    description: "Circuit power factor"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getCircuitPowerFactor
+  - name: get_circuit_voltage
+    description: "Circuit voltage (RMS)"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getCircuitVoltage
+  - name: get_circuit_voltage_waveform
+    description: "Circuit voltage waveform"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getCircuitVoltageWaveform
+  - name: get_panel_energy
+    description: "Panel energy"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getPanelEnergy
+  - name: get_panel_power
+    description: "Panel power"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getPanelPower
+  - name: get_panel_power_factor
+    description: "Panel power factor"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getPanelPowerFactor
+  - name: get_panel_pro_capture_events
+    description: "Panel Pro Capture events"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getPanelProCaptureEvents
+  - name: get_panel_pro_capture_waveforms
+    description: "Panel Pro Capture waveforms"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getPanelProCaptureWaveforms
+  - name: get_panel_total_harmonic_distortion
+    description: "Panel total harmonic distortion"
+    source_operation: openapi/verdigris-technologies-data-v4-openapi.json#getPanelTotalHarmonicDistortion

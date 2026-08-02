@@ -1,0 +1,24 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Verdigris Data API
+  version: 1.0.0
+extends: openapi/verdigris-technologies-data-v4-openapi.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-enriched: '2026-07-21'
+    x-api-category: energy-monitoring
+    x-auth-model: oauth2-client-credentials
+    x-access: restricted-to-customers
+- target: $.info.x-links
+  update:
+    developer_portal: https://docs.verdigris.co
+    authentication: https://docs.verdigris.co/reference/authentication
+    llms_txt: https://docs.verdigris.co/llms.txt
+    trust_center: https://trust.verdigris.co/
+- target: $.components.securitySchemes.oauth2
+  update:
+    x-token-endpoint: https://auth.verdigris.co/oauth/token
+    x-audience: https://api.verdigris.co/
+    x-token-lifetime-seconds: 3600
+    x-token-issuance-rate-limit: 20 per hour

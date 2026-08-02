@@ -1,0 +1,30 @@
+generated: '2026-07-21'
+method: searched
+source: openapi/verdigris-technologies-data-v4-openapi.json
+docs: https://docs.verdigris.co/reference/authentication
+summary:
+  types:
+  - oauth2
+  oauth2_flows:
+  - clientCredentials
+  token_type: Bearer JWT
+  token_lifetime_seconds: 3600
+  audience: https://api.verdigris.co/
+  credential_provisioning: Verdigris Admin Console (admin.verdigris.co) issues a Client ID + Client Secret per API key
+  token_request_rate_limit: 20 token requests per hour (480 per rolling 24h); HTTP 429 when exceeded
+  access_note: API access is restricted to active Verdigris customers
+schemes:
+- name: oauth2
+  type: oauth2
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://auth.verdigris.co/oauth/token
+    scopes: 0
+  sources:
+  - openapi/verdigris-technologies-data-v4-openapi.json
+notes:
+- Obtain a token by POSTing grant_type=client_credentials with client_id, client_secret,
+  and audience=https://api.verdigris.co/ to https://auth.verdigris.co/oauth/token.
+- Send the returned token on every API call via the Authorization header (Bearer scheme).
+- Tokens live for 1 hour; cache and reuse them to avoid the 20/hour token-issuance limit.
+- Identity provider is Auth0 (auth.verdigris.co publishes an OIDC discovery document).

@@ -1,0 +1,12 @@
+generated: '2026-07-21'
+method: searched
+probe: true
+source: https://trust.verdigris.co/
+url: https://trust.verdigris.co/
+certifications:
+- SOC 2
+evidence:
+- source: https://trust.verdigris.co/
+  keywords:
+  - soc 2
+  - trust center

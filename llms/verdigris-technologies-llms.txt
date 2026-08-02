@@ -1,0 +1,53 @@
+# Verdigris API Documentation
+
+> Verdigris API provides various data about the electrical energy usage in your buildings fitted with our sensors.
+
+## Guides
+- [How to Create or Manage API Keys](https://docs.verdigris.co/docs/how-to-create-or-manage-api-key.md)
+- [Using Verdigris API with Postman](https://docs.verdigris.co/docs/how-to-use-verdigris-api-with-postman.md)
+- [General Overview](https://docs.verdigris.co/docs/vedigris-api-overview.md)
+
+## API Reference
+- [Batch breaker energy](https://docs.verdigris.co/reference/getbatchbreakerenergy.md): Gets energy data for multiple breakers in a single batch request. Units are in watt-hour (SI unit: **Wh**) if `type` query parameter is `real`, volt-ampere-hour (SI unit: **VAh**) if `type` query parameter is `apparent`.
+- [Breaker energy](https://docs.verdigris.co/reference/getbreakerenergy.md): Gets energy data for a breaker. Units are in watt-hour (SI unit: **Wh**) if `type` query parameter is `real`, volt-ampere-hour (SI unit: **VAh**) if `type` query parameter is `apparent`.
+- [Batch building energy](https://docs.verdigris.co/reference/getbatchbuildingenergy.md): Gets energy data for multiple buildings in a single batch request. Units are in watt-hour (SI unit: **Wh**) if `type` query parameter is `real`, volt-ampere-hour (SI unit: **VAh**) if `type` query parameter is `apparent`.
+- [Building energy](https://docs.verdigris.co/reference/getbuildingenergy.md): Gets energy data for a building. Units are in watt-hour (SI unit: **Wh**) if `type` query parameter is `real`, volt-ampere-hour (SI unit: **VAh**) if `type` query parameter is `apparent`.
+- [Batch circuit energy](https://docs.verdigris.co/reference/getbatchcircuitenergy.md): Gets energy data for multiple circuits in a single batch request. Units are in watt-hour (SI unit: **Wh**) if `type` query parameter is `real`, volt-ampere-hour (SI unit: **VAh**) if `type` query parameter is `apparent`.
+- [Circuit energy](https://docs.verdigris.co/reference/getcircuitenergy.md): Gets energy data for a circuit. Units are in watt-hour (SI unit: **Wh**) if `type` query parameter is `real`, volt-ampere-hour (SI unit: **VAh**) if `type` query parameter is `apparent`.
+- [Batch panel energy](https://docs.verdigris.co/reference/getbatchpanelenergy.md): Gets energy data for multiple panels in a single batch request. Units are in watt-hour (SI unit: **Wh**) if `type` query parameter is `real`, volt-ampere-hour (SI unit: **VAh**) if `type` query parameter is `apparent`.
+- [Panel energy](https://docs.verdigris.co/reference/getpanelenergy.md): Gets energy data for a panel. Units are in watt-hour (SI unit: **Wh**) if `type` query parameter is `real`, volt-ampere-hour (SI unit: **VAh**) if `type` query parameter is `apparent`.
+- [Batch breaker power](https://docs.verdigris.co/reference/getbatchbreakerpower.md): Gets average power data for multiple breakers in a single batch request. Units are in watts (SI unit: **W**).
+- [Breaker power](https://docs.verdigris.co/reference/getbreakerpower.md): Gets average power data for a breaker. Units are in watts (SI unit: **W**).
+- [Batch building power](https://docs.verdigris.co/reference/getbatchbuildingpower.md): Gets average power data for multiple buildings in a single batch request. Units are in watts (SI unit: **W**).
+- [Building power](https://docs.verdigris.co/reference/getbuildingpower.md): Gets average power data for a building. Units are in watts (SI unit: **W**).
+- [Batch circuit power](https://docs.verdigris.co/reference/getbatchcircuitpower.md): Gets average power data for multiple circuits in a single batch request. Units are in watts (SI unit: **W**).
+- [Circuit power](https://docs.verdigris.co/reference/getcircuitpower.md): Gets average power data for a circuit. Units are in watts (SI unit: **W**) for real power, volt-amperes (SI unit: **VA**) for apparent power, and volt-amperes-reactive (SI unit: **VAr**) for reactive power.
+- [Batch panel power](https://docs.verdigris.co/reference/getbatchpanelpower.md): Gets average power data for multiple panels in a single batch request. Units are in watts (SI unit: **W**).
+- [Panel power](https://docs.verdigris.co/reference/getpanelpower.md): Gets average power data for a panel. Units are in watts (SI unit: **W**).
+- [Batch circuit current (RMS)](https://docs.verdigris.co/reference/getbatchcircuitcurrent.md): Gets current data for multiple circuits in a single batch request. Units are in amperes (SI unit: **A**).
+- [Batch circuit current waveforms](https://docs.verdigris.co/reference/getbatchcircuitcurrentwaveform.md): Gets current waveforms for multiple circuits in a single batch request.
+- [Circuit current (RMS)](https://docs.verdigris.co/reference/getcircuitcurrent.md): Gets current data for a circuit. Units are in amperes (SI unit: **A**).
+- [Circuit current waveform](https://docs.verdigris.co/reference/getcircuitcurrentwaveform.md): Gets current waveform for a circuit.
+- [Batch circuit voltage (RMS)](https://docs.verdigris.co/reference/getbatchcircuitvoltage.md): Gets voltage data for multiple circuits in a single batch request. Units are in volts (SI unit: **V**).
+- [Batch circuit voltage waveforms](https://docs.verdigris.co/reference/getbatchcircuitvoltagewaveform.md): Gets voltage waveforms for multiple circuits in a single batch request.
+- [Circuit voltage (RMS)](https://docs.verdigris.co/reference/getcircuitvoltage.md): Gets voltage data for a circuit. Units are in volts (SI unit: **V**).
+- [Circuit voltage waveform](https://docs.verdigris.co/reference/getcircuitvoltagewaveform.md): Gets voltage waveform for a circuit.
+- [Batch breaker power factor](https://docs.verdigris.co/reference/getbatchbreakerpowerfactor.md): Gets average power factor data for multiple breakers in a single batch request. The power factor can range between -1 to 1 (a negative power factor may indicate a reverse current flow from sources such as solar panels or battery banks).
+- [Breaker power factor](https://docs.verdigris.co/reference/getbreakerpowerfactor.md): Gets average power factor data for a breaker. The power factor can range between -1 to 1 (a negative power factor may indicate a reverse current flow from sources such as solar panels or battery banks).
+- [Batch circuit power factor](https://docs.verdigris.co/reference/getbatchcircuitpowerfactor.md): Gets average power factor data for multiple circuits in a single batch request. The power factor can range between -1 to 1 (a negative power factor may indicate a reverse current flow from sources such as solar panels or battery banks).
+- [Circuit power factor](https://docs.verdigris.co/reference/getcircuitpowerfactor.md): Gets average power factor data for a circuit. The power factor can range between -1 to 1 (a negative power factor may indicate a reverse current flow from sources such as solar panels or battery banks).
+- [Batch panel power factor](https://docs.verdigris.co/reference/getbatchpanelpowerfactor.md): Gets average power factor data for multiple panels in a single batch request. The power factor can range between -1 to 1 (a negative power factor may indicate a reverse current flow from sources such as solar panels or battery banks).
+- [Panel power factor](https://docs.verdigris.co/reference/getpanelpowerfactor.md): Gets average power factor data for a panel. The power factor can range between -1 to 1 (a negative power factor may indicate a reverse current flow from sources such as solar panels or battery banks).
+- [Total Harmonic Distortion](https://docs.verdigris.co/reference/total-harmonic-distortion.md)
+- [Batch panel total harmonic distortion](https://docs.verdigris.co/reference/getbatchpanelthd.md): Gets average total harmonic distortion data for multiple panels in a single batch request.
+- [Panel total harmonic distortion](https://docs.verdigris.co/reference/getpaneltotalharmonicdistortion.md): Gets average total harmonic distortion data for a panel.
+- [Batch building controls](https://docs.verdigris.co/reference/getbatchbuildingcontrol.md): Gets time series data for various controls of multiple builidngs in a single batch request.
+- [Batch weather](https://docs.verdigris.co/reference/getbatchweather.md): Gets weather data for multiple buildings in a single batch request. Units are in degree Celsius (SI unit: **℃**).
+- [Building Pro Capture events](https://docs.verdigris.co/reference/getbuildingprocaptureevents.md): Gets Pro Capture event summary for all panels in the specified building.
+- [Panel Pro Capture events](https://docs.verdigris.co/reference/getpanelprocaptureevents.md): Gets Pro Capture event summary for the building.
+- [Panel Pro Capture waveforms](https://docs.verdigris.co/reference/getpanelprocapturewaveforms.md): Gets Pro Capture waveforms that
+- [Batch building energy forecast](https://docs.verdigris.co/reference/getbatchbuildingforecast.md): Gets forecasted energy data for multiple buildings in a single batch request.
+- [Getting Started With Your API](https://docs.verdigris.co/reference/getting-started-with-your-api.md): This page will help you get started with Short Interval Power.
+
+## Recipes
+- [Authenticate](https://docs.verdigris.co/recipes/authenticate.md)
