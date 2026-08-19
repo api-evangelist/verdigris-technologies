@@ -1,0 +1,1326 @@
+{
+  "item": [
+    {
+      "id": "1f19720a-703f-4751-9c39-d5649a9b971f",
+      "name": "Events",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "20f28889-2a04-491e-84a0-0a350ef5be16",
+          "name": "Building Pro Capture events",
+          "request": {
+            "name": "Building Pro Capture events",
+            "description": {
+              "content": "Gets Pro Capture event summary for all panels in the specified building.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "events",
+                "pro-capture",
+                "buildings",
+                ":buildingId",
+                "panels"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start_time",
+                  "value": "<dateTime>",
+                  "description": "(Required) Start of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_time",
+                  "value": "<dateTime>",
+                  "description": "(Required) End of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "timestamp_format",
+                  "value": "<string>",
+                  "description": "Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "timezone",
+                  "value": "UTC",
+                  "description": "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> 📘 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "buildingId",
+                  "description": "(Required) Building ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1950b405-b8f4-4b3e-ae29-1fb09a0d7f75",
+              "name": "Request to resource is unauthorized. This is likely due to missing access token in the `Authorization` header or an invalid token signature usually as a result of attempted token forgery by an unauthorized third-party.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "pro-capture",
+                    "buildings",
+                    ":buildingId",
+                    "panels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "buildingId",
+                      "description": "(Required) Building ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnauthorizedError\",\n  \"message\": \"No authorization token was found\",\n  \"code\": \"credentials_required\",\n  \"status\": 401\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1fa2a09e-98bb-4a50-a6bc-cfe846a08355",
+              "name": "Request to resource is forbidden due to insufficient permissions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "pro-capture",
+                    "buildings",
+                    ":buildingId",
+                    "panels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "buildingId",
+                      "description": "(Required) Building ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnauthorizedError\",\n  \"message\": \"Permission denied\",\n  \"code\": \"permission_denied\",\n  \"status\": 403\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69866047-7263-40b8-a233-606e7f3895b8",
+              "name": "Resource with given ID cannot be found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "pro-capture",
+                    "buildings",
+                    ":buildingId",
+                    "panels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "buildingId",
+                      "description": "(Required) Building ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"EntityNotFoundError\",\n  \"message\": \"One or more entity with given IDs does not exist in your account.\",\n  \"status\": 404,\n  \"invalidIds\": [\n    1,\n    2,\n    3\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bd63c9d4-7898-4fec-b677-cf9a16b38746",
+              "name": "One or more validations for request has failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "pro-capture",
+                    "buildings",
+                    ":buildingId",
+                    "panels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "buildingId",
+                      "description": "(Required) Building ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnprocessableEntityError\",\n  \"message\": \"Validation error\",\n  \"status\": 422,\n  \"errors\": [\n    {\n      \"location\": \"query\",\n      \"msg\": \"must be in ISO 8601 format\",\n      \"param\": \"start_time\",\n      \"value\": \"1:15PM 10/13/1999\"\n    },\n    {\n      \"location\": \"query\",\n      \"msg\": \"must be in ISO 8601 format\",\n      \"param\": \"start_time\",\n      \"value\": \"1:15PM 10/13/1999\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c316e583-3df1-4a54-88cc-6be70ef14371",
+          "name": "Panel Pro Capture events",
+          "request": {
+            "name": "Panel Pro Capture events",
+            "description": {
+              "content": "Gets Pro Capture event summary for the building.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "events",
+                "pro-capture",
+                "buildings",
+                ":buildingId",
+                "panels",
+                ":panelId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start_time",
+                  "value": "<dateTime>",
+                  "description": "(Required) Start of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_time",
+                  "value": "<dateTime>",
+                  "description": "(Required) End of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "timestamp_format",
+                  "value": "<string>",
+                  "description": "Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "timezone",
+                  "value": "UTC",
+                  "description": "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> 📘 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "buildingId",
+                  "description": "(Required) Building ID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "panelId",
+                  "description": "(Required) Panel ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d035ec5b-7184-47b5-ac40-ec8c8f1471a1",
+              "name": "Request to resource is unauthorized. This is likely due to missing access token in the `Authorization` header or an invalid token signature usually as a result of attempted token forgery by an unauthorized third-party.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "pro-capture",
+                    "buildings",
+                    ":buildingId",
+                    "panels",
+                    ":panelId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "buildingId",
+                      "description": "(Required) Building ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "panelId",
+                      "description": "(Required) Panel ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnauthorizedError\",\n  \"message\": \"No authorization token was found\",\n  \"code\": \"credentials_required\",\n  \"status\": 401\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3e40920b-a16c-449d-ac9c-11b333a19a70",
+              "name": "Request to resource is forbidden due to insufficient permissions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "pro-capture",
+                    "buildings",
+                    ":buildingId",
+                    "panels",
+                    ":panelId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "buildingId",
+                      "description": "(Required) Building ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "panelId",
+                      "description": "(Required) Panel ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnauthorizedError\",\n  \"message\": \"Permission denied\",\n  \"code\": \"permission_denied\",\n  \"status\": 403\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1228bd64-a49f-4b85-8231-11314f86a312",
+              "name": "Resource with given ID cannot be found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "pro-capture",
+                    "buildings",
+                    ":buildingId",
+                    "panels",
+                    ":panelId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "buildingId",
+                      "description": "(Required) Building ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "panelId",
+                      "description": "(Required) Panel ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"EntityNotFoundError\",\n  \"message\": \"One or more entity with given IDs does not exist in your account.\",\n  \"status\": 404,\n  \"invalidIds\": [\n    1,\n    2,\n    3\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5789fcce-5ac7-4528-9c67-5ff0e494d669",
+              "name": "One or more validations for request has failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "pro-capture",
+                    "buildings",
+                    ":buildingId",
+                    "panels",
+                    ":panelId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "buildingId",
+                      "description": "(Required) Building ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "panelId",
+                      "description": "(Required) Panel ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnprocessableEntityError\",\n  \"message\": \"Validation error\",\n  \"status\": 422,\n  \"errors\": [\n    {\n      \"location\": \"query\",\n      \"msg\": \"must be in ISO 8601 format\",\n      \"param\": \"start_time\",\n      \"value\": \"1:15PM 10/13/1999\"\n    },\n    {\n      \"location\": \"query\",\n      \"msg\": \"must be in ISO 8601 format\",\n      \"param\": \"start_time\",\n      \"value\": \"1:15PM 10/13/1999\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "95b9a47a-850b-4bc4-afde-b23f2f035e77",
+          "name": "Panel Pro Capture waveforms",
+          "request": {
+            "name": "Panel Pro Capture waveforms",
+            "description": {
+              "content": "Gets Pro Capture waveforms that\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "events",
+                "pro-capture",
+                "buildings",
+                ":buildingId",
+                "panels",
+                ":panelId",
+                "waveforms"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start_time",
+                  "value": "<dateTime>",
+                  "description": "(Required) Start of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_time",
+                  "value": "<dateTime>",
+                  "description": "(Required) End of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Caps the response to the most recent `limit` events in the query time range, ordered by descending timestamp. When omitted, every event in the range is returned. Ignored when `event_timestamp` is supplied, since that already selects a single event.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "event_timestamp",
+                  "value": "<dateTime>",
+                  "description": "Projects the result to the single event at this exact timestamp within the query time range. Accepts an [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) string or an integer [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time) in milliseconds. If no event matches, the response is an empty collection (not a 404). Takes precedence over `limit`.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "timestamp_format",
+                  "value": "<string>",
+                  "description": "Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "timezone",
+                  "value": "UTC",
+                  "description": "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> 📘 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "buildingId",
+                  "description": "(Required) Building ID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "panelId",
+                  "description": "(Required) Panel ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6e5fb363-525b-4258-b497-1c985f6e23d3",
+              "name": "Request to resource is unauthorized. This is likely due to missing access token in the `Authorization` header or an invalid token signature usually as a result of attempted token forgery by an unauthorized third-party.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "pro-capture",
+                    "buildings",
+                    ":buildingId",
+                    "panels",
+                    ":panelId",
+                    "waveforms"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "event_timestamp",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "buildingId",
+                      "description": "(Required) Building ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "panelId",
+                      "description": "(Required) Panel ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnauthorizedError\",\n  \"message\": \"No authorization token was found\",\n  \"code\": \"credentials_required\",\n  \"status\": 401\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "801dc4c2-a682-4271-bd01-0b48daebb5c9",
+              "name": "Request to resource is forbidden due to insufficient permissions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "pro-capture",
+                    "buildings",
+                    ":buildingId",
+                    "panels",
+                    ":panelId",
+                    "waveforms"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "event_timestamp",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "buildingId",
+                      "description": "(Required) Building ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "panelId",
+                      "description": "(Required) Panel ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnauthorizedError\",\n  \"message\": \"Permission denied\",\n  \"code\": \"permission_denied\",\n  \"status\": 403\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "14b05662-47eb-4354-8b51-b664bb161da0",
+              "name": "Resource with given ID cannot be found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "pro-capture",
+                    "buildings",
+                    ":buildingId",
+                    "panels",
+                    ":panelId",
+                    "waveforms"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "event_timestamp",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "buildingId",
+                      "description": "(Required) Building ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "panelId",
+                      "description": "(Required) Panel ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"EntityNotFoundError\",\n  \"message\": \"One or more entity with given IDs does not exist in your account.\",\n  \"status\": 404,\n  \"invalidIds\": [\n    1,\n    2,\n    3\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "52c999c4-2796-4ada-8255-4b188d3f0d50",
+              "name": "One or more validations for request has failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "pro-capture",
+                    "buildings",
+                    ":buildingId",
+                    "panels",
+                    ":panelId",
+                    "waveforms"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "event_timestamp",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "buildingId",
+                      "description": "(Required) Building ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "panelId",
+                      "description": "(Required) Panel ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnprocessableEntityError\",\n  \"message\": \"Validation error\",\n  \"status\": 422,\n  \"errors\": [\n    {\n      \"location\": \"query\",\n      \"msg\": \"must be in ISO 8601 format\",\n      \"param\": \"start_time\",\n      \"value\": \"1:15PM 10/13/1999\"\n    },\n    {\n      \"location\": \"query\",\n      \"msg\": \"must be in ISO 8601 format\",\n      \"param\": \"start_time\",\n      \"value\": \"1:15PM 10/13/1999\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.verdigris.co/data/v4",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "accessTokenUrl",
+        "value": "https://auth.verdigris.co/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "c1a07118-c9ad-42a6-93a1-dffe5510cd99",
+    "name": "Data Control Events API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Microservice that serves insightful power and energy data\n\nContact Support:\n Name: Verdigris Support\n Email: support@verdigris.co",
+      "type": "text/plain"
+    }
+  }
+}

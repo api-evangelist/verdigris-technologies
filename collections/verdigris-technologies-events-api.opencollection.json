@@ -1,0 +1,200 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Data Control Events API",
+    "version": "1.1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://auth.verdigris.co/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Building Pro Capture events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.verdigris.co/data/v4/events/pro-capture/buildings/:buildingId/panels",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "buildingId",
+                "value": "",
+                "type": "path",
+                "description": "Building ID"
+              },
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query",
+                "description": "Start of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.\n"
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query",
+                "description": "End of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.\n"
+              },
+              {
+                "name": "timestamp_format",
+                "value": "",
+                "type": "query",
+                "description": "Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).\n"
+              },
+              {
+                "name": "timezone",
+                "value": "",
+                "type": "query",
+                "description": "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> 📘 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+              }
+            ]
+          },
+          "docs": "Gets Pro Capture event summary for all panels in the specified building.\n"
+        },
+        {
+          "info": {
+            "name": "Panel Pro Capture events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.verdigris.co/data/v4/events/pro-capture/buildings/:buildingId/panels/:panelId",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "buildingId",
+                "value": "",
+                "type": "path",
+                "description": "Building ID"
+              },
+              {
+                "name": "panelId",
+                "value": "",
+                "type": "path",
+                "description": "Panel ID"
+              },
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query",
+                "description": "Start of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.\n"
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query",
+                "description": "End of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.\n"
+              },
+              {
+                "name": "timestamp_format",
+                "value": "",
+                "type": "query",
+                "description": "Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).\n"
+              },
+              {
+                "name": "timezone",
+                "value": "",
+                "type": "query",
+                "description": "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> 📘 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+              }
+            ]
+          },
+          "docs": "Gets Pro Capture event summary for the building.\n"
+        },
+        {
+          "info": {
+            "name": "Panel Pro Capture waveforms",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.verdigris.co/data/v4/events/pro-capture/buildings/:buildingId/panels/:panelId/waveforms",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "buildingId",
+                "value": "",
+                "type": "path",
+                "description": "Building ID"
+              },
+              {
+                "name": "panelId",
+                "value": "",
+                "type": "path",
+                "description": "Panel ID"
+              },
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query",
+                "description": "Start of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.\n"
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query",
+                "description": "End of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.\n"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Caps the response to the most recent `limit` events in the query time range, ordered by descending timestamp. When omitted, every event in the range is returned. Ignored when `event_timestamp` is supplied, since that already selects a single event.\n"
+              },
+              {
+                "name": "event_timestamp",
+                "value": "",
+                "type": "query",
+                "description": "Projects the result to the single event at this exact timestamp within the query time range. Accepts an [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) string or an integer [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time) in milliseconds. If no event matches, the response is an empty collection (not a 404). Takes precedence over `limit`.\n"
+              },
+              {
+                "name": "timestamp_format",
+                "value": "",
+                "type": "query",
+                "description": "Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).\n"
+              },
+              {
+                "name": "timezone",
+                "value": "",
+                "type": "query",
+                "description": "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> 📘 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+              }
+            ]
+          },
+          "docs": "Gets Pro Capture waveforms that\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

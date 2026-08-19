@@ -1,0 +1,541 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Data Control Energy API",
+    "version": "1.1"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://auth.verdigris.co/oauth/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Energy",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Batch breaker energy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.verdigris.co/data/v4/energy/breakers",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "An array of breaker IDs separated by commas."
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Interval between each data points. Affects the validity of `start_time`, `end_time` query parameters, time resolution and aggregation of results.\n\nFor example, given the time range query parameters, `start_time=2020-01-01T12:30:00Z&end_time=2020-01-01T13:00:00Z`:\n\n- `interval=1m`: returns 30 data points at minutely resolution.\n- `interval=15m`: returns 2 data points at 15-minutesly/quarter-hourly resolution.\n\nThe ordering of timestamps is not guaranteed.\n"
+              },
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query",
+                "description": "Start of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `start_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `start_time=2020-01-01T12:34:00Z&interval=1m`\n- **VALID**: `start_time=2020-01-01T12:45:00Z&interval=15m`\n- **VALID**: `start_time=2020-01-01T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T08:00:00Z&interval=1d` (UTC)\n  - `start_time=2020-01-01T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `start_time=2020-01-01T12:34:00Z&interval=15m`\n- **NOT VALID**: `start_time=2020-01-01T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T00:00:00Z&interval=1d`\n  - `start_time=2020-01-01T04:00:00+08:00&interval=1d`\n"
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query",
+                "description": "End of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `end_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `end_time=2020-12-31T12:34:00Z&interval=1m`\n- **VALID**: `end_time=2020-12-31T12:45:00Z&interval=15m`\n- **VALID**: `end_time=2020-12-31T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T08:00:00Z&interval=1d` (UTC)\n  - `end_time=2020-12-31T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `end_time=2020-12-31T12:34:00Z&interval=15m`\n- **NOT VALID**: `end_time=2020-12-31T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T00:00:00Z&interval=1d`\n  - `end_time=2020-12-31T04:00:00+08:00&interval=1d`\n"
+              },
+              {
+                "name": "timestamp_format",
+                "value": "",
+                "type": "query",
+                "description": "Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).\n"
+              },
+              {
+                "name": "timezone",
+                "value": "",
+                "type": "query",
+                "description": "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> 📘 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type of energy:\n\n- `real`: Energy calculated from real (true) power over given time interval. Returns energy in watt-hour (SI unit: **Wh**).\n- `apparent`: Energy calculated from apparent power over given time interval. Returns energy in volt-ampere-hour (SI unit: **VAh**). Apparent energy is not supported for daily interval.\n"
+              }
+            ]
+          },
+          "docs": "Gets energy data for multiple breakers in a single batch request. Units are in watt-hour (SI unit: **Wh**) if `type` query parameter is `real`, volt-ampere-hour (SI unit: **VAh**) if `type` query parameter is `apparent`.\n"
+        },
+        {
+          "info": {
+            "name": "Batch building energy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.verdigris.co/data/v4/energy/buildings",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "An array of building IDs separated by commas."
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Interval between each data points. Affects the validity of `start_time`, `end_time` query parameters, time resolution and aggregation of results.\n\nFor example, given the time range query parameters, `start_time=2020-01-01T12:30:00Z&end_time=2020-01-01T13:00:00Z`:\n\n- `interval=1m`: returns 30 data points at minutely resolution.\n- `interval=15m`: returns 2 data points at 15-minutesly/quarter-hourly resolution.\n\nThe ordering of timestamps is not guaranteed.\n"
+              },
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query",
+                "description": "Start of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `start_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `start_time=2020-01-01T12:34:00Z&interval=1m`\n- **VALID**: `start_time=2020-01-01T12:45:00Z&interval=15m`\n- **VALID**: `start_time=2020-01-01T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T08:00:00Z&interval=1d` (UTC)\n  - `start_time=2020-01-01T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `start_time=2020-01-01T12:34:00Z&interval=15m`\n- **NOT VALID**: `start_time=2020-01-01T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T00:00:00Z&interval=1d`\n  - `start_time=2020-01-01T04:00:00+08:00&interval=1d`\n"
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query",
+                "description": "End of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `end_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `end_time=2020-12-31T12:34:00Z&interval=1m`\n- **VALID**: `end_time=2020-12-31T12:45:00Z&interval=15m`\n- **VALID**: `end_time=2020-12-31T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T08:00:00Z&interval=1d` (UTC)\n  - `end_time=2020-12-31T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `end_time=2020-12-31T12:34:00Z&interval=15m`\n- **NOT VALID**: `end_time=2020-12-31T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T00:00:00Z&interval=1d`\n  - `end_time=2020-12-31T04:00:00+08:00&interval=1d`\n"
+              },
+              {
+                "name": "timestamp_format",
+                "value": "",
+                "type": "query",
+                "description": "Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).\n"
+              },
+              {
+                "name": "timezone",
+                "value": "",
+                "type": "query",
+                "description": "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> 📘 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type of energy:\n\n- `real`: Energy calculated from real (true) power over given time interval. Returns energy in watt-hour (SI unit: **Wh**).\n- `apparent`: Energy calculated from apparent power over given time interval. Returns energy in volt-ampere-hour (SI unit: **VAh**). Apparent energy is not supported for daily interval.\n"
+              }
+            ]
+          },
+          "docs": "Gets energy data for multiple buildings in a single batch request. Units are in watt-hour (SI unit: **Wh**) if `type` query parameter is `real`, volt-ampere-hour (SI unit: **VAh**) if `type` query parameter is `apparent`.\n"
+        },
+        {
+          "info": {
+            "name": "Batch circuit energy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.verdigris.co/data/v4/energy/circuits",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "An array of circuit IDs separated by commas."
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Interval between each data points. Affects the validity of `start_time`, `end_time` query parameters, time resolution and aggregation of results.\n\nFor example, given the time range query parameters, `start_time=2020-01-01T12:30:00Z&end_time=2020-01-01T13:00:00Z`:\n\n- `interval=1m`: returns 30 data points at minutely resolution.\n- `interval=15m`: returns 2 data points at 15-minutesly/quarter-hourly resolution.\n\nThe ordering of timestamps is not guaranteed.\n"
+              },
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query",
+                "description": "Start of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `start_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `start_time=2020-01-01T12:34:00Z&interval=1m`\n- **VALID**: `start_time=2020-01-01T12:45:00Z&interval=15m`\n- **VALID**: `start_time=2020-01-01T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T08:00:00Z&interval=1d` (UTC)\n  - `start_time=2020-01-01T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `start_time=2020-01-01T12:34:00Z&interval=15m`\n- **NOT VALID**: `start_time=2020-01-01T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T00:00:00Z&interval=1d`\n  - `start_time=2020-01-01T04:00:00+08:00&interval=1d`\n"
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query",
+                "description": "End of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `end_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `end_time=2020-12-31T12:34:00Z&interval=1m`\n- **VALID**: `end_time=2020-12-31T12:45:00Z&interval=15m`\n- **VALID**: `end_time=2020-12-31T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T08:00:00Z&interval=1d` (UTC)\n  - `end_time=2020-12-31T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `end_time=2020-12-31T12:34:00Z&interval=15m`\n- **NOT VALID**: `end_time=2020-12-31T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T00:00:00Z&interval=1d`\n  - `end_time=2020-12-31T04:00:00+08:00&interval=1d`\n"
+              },
+              {
+                "name": "timestamp_format",
+                "value": "",
+                "type": "query",
+                "description": "Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).\n"
+              },
+              {
+                "name": "timezone",
+                "value": "",
+                "type": "query",
+                "description": "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> 📘 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type of energy:\n\n- `real`: Energy calculated from real (true) power over given time interval. Returns energy in watt-hour (SI unit: **Wh**).\n- `apparent`: Energy calculated from apparent power over given time interval. Returns energy in volt-ampere-hour (SI unit: **VAh**). Apparent energy is not supported for daily interval.\n"
+              },
+              {
+                "name": "override_phase",
+                "value": "",
+                "type": "query",
+                "description": "> ⚠️ Warning\n>\n> This query parameter is intended for advanced users troubleshooting potentially incorrect data. Incorrect use of this query parameter can lead to erroneous data.\n\nOverrides the configured phase for this circuit and returns the data as if the circuit was on the specified phase.\n\nWhen omitted, the circuit will reference the phase based on the current panel configuration.\n"
+              },
+              {
+                "name": "override_sensor_orientation",
+                "value": "",
+                "type": "query",
+                "description": "> ⚠️ Warning\n>\n> This query parameter is intended for advanced users troubleshooting potentially incorrect data. Incorrect use of this query parameter can lead to erroneous data.\n\nOverrides the configured sensor orientation to return circuit data as if the CT was clamped upside down and flip positive values to negative and vice versa.\n\nWhen omitted, the API will compute the data by referencing the sensor orientation based on the current panel configuration.\n"
+              }
+            ]
+          },
+          "docs": "Gets energy data for multiple circuits in a single batch request. Units are in watt-hour (SI unit: **Wh**) if `type` query parameter is `real`, volt-ampere-hour (SI unit: **VAh**) if `type` query parameter is `apparent`.\n"
+        },
+        {
+          "info": {
+            "name": "Batch panel energy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.verdigris.co/data/v4/energy/panels",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "An array of panel IDs separated by commas."
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Interval between each data points. Affects the validity of `start_time`, `end_time` query parameters, time resolution and aggregation of results.\n\nFor example, given the time range query parameters, `start_time=2020-01-01T12:30:00Z&end_time=2020-01-01T13:00:00Z`:\n\n- `interval=1m`: returns 30 data points at minutely resolution.\n- `interval=15m`: returns 2 data points at 15-minutesly/quarter-hourly resolution.\n\nThe ordering of timestamps is not guaranteed.\n"
+              },
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query",
+                "description": "Start of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `start_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `start_time=2020-01-01T12:34:00Z&interval=1m`\n- **VALID**: `start_time=2020-01-01T12:45:00Z&interval=15m`\n- **VALID**: `start_time=2020-01-01T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T08:00:00Z&interval=1d` (UTC)\n  - `start_time=2020-01-01T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `start_time=2020-01-01T12:34:00Z&interval=15m`\n- **NOT VALID**: `start_time=2020-01-01T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T00:00:00Z&interval=1d`\n  - `start_time=2020-01-01T04:00:00+08:00&interval=1d`\n"
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query",
+                "description": "End of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `end_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `end_time=2020-12-31T12:34:00Z&interval=1m`\n- **VALID**: `end_time=2020-12-31T12:45:00Z&interval=15m`\n- **VALID**: `end_time=2020-12-31T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T08:00:00Z&interval=1d` (UTC)\n  - `end_time=2020-12-31T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `end_time=2020-12-31T12:34:00Z&interval=15m`\n- **NOT VALID**: `end_time=2020-12-31T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T00:00:00Z&interval=1d`\n  - `end_time=2020-12-31T04:00:00+08:00&interval=1d`\n"
+              },
+              {
+                "name": "timestamp_format",
+                "value": "",
+                "type": "query",
+                "description": "Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).\n"
+              },
+              {
+                "name": "timezone",
+                "value": "",
+                "type": "query",
+                "description": "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> 📘 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type of energy:\n\n- `real`: Energy calculated from real (true) power over given time interval. Returns energy in watt-hour (SI unit: **Wh**).\n- `apparent`: Energy calculated from apparent power over given time interval. Returns energy in volt-ampere-hour (SI unit: **VAh**). Apparent energy is not supported for daily interval.\n"
+              }
+            ]
+          },
+          "docs": "Gets energy data for multiple panels in a single batch request. Units are in watt-hour (SI unit: **Wh**) if `type` query parameter is `real`, volt-ampere-hour (SI unit: **VAh**) if `type` query parameter is `apparent`.\n"
+        },
+        {
+          "info": {
+            "name": "Breaker energy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.verdigris.co/data/v4/energy/breakers/:id",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Breaker ID"
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Interval between each data points. Affects the validity of `start_time`, `end_time` query parameters, time resolution and aggregation of results.\n\nFor example, given the time range query parameters, `start_time=2020-01-01T12:30:00Z&end_time=2020-01-01T13:00:00Z`:\n\n- `interval=1m`: returns 30 data points at minutely resolution.\n- `interval=15m`: returns 2 data points at 15-minutesly/quarter-hourly resolution.\n\nThe ordering of timestamps is not guaranteed.\n"
+              },
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query",
+                "description": "Start of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `start_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `start_time=2020-01-01T12:34:00Z&interval=1m`\n- **VALID**: `start_time=2020-01-01T12:45:00Z&interval=15m`\n- **VALID**: `start_time=2020-01-01T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T08:00:00Z&interval=1d` (UTC)\n  - `start_time=2020-01-01T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `start_time=2020-01-01T12:34:00Z&interval=15m`\n- **NOT VALID**: `start_time=2020-01-01T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T00:00:00Z&interval=1d`\n  - `start_time=2020-01-01T04:00:00+08:00&interval=1d`\n"
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query",
+                "description": "End of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `end_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `end_time=2020-12-31T12:34:00Z&interval=1m`\n- **VALID**: `end_time=2020-12-31T12:45:00Z&interval=15m`\n- **VALID**: `end_time=2020-12-31T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T08:00:00Z&interval=1d` (UTC)\n  - `end_time=2020-12-31T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `end_time=2020-12-31T12:34:00Z&interval=15m`\n- **NOT VALID**: `end_time=2020-12-31T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T00:00:00Z&interval=1d`\n  - `end_time=2020-12-31T04:00:00+08:00&interval=1d`\n"
+              },
+              {
+                "name": "timestamp_format",
+                "value": "",
+                "type": "query",
+                "description": "Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).\n"
+              },
+              {
+                "name": "timezone",
+                "value": "",
+                "type": "query",
+                "description": "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> 📘 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type of energy:\n\n- `real`: Energy calculated from real (true) power over given time interval. Returns energy in watt-hour (SI unit: **Wh**).\n- `apparent`: Energy calculated from apparent power over given time interval. Returns energy in volt-ampere-hour (SI unit: **VAh**). Apparent energy is not supported for daily interval.\n"
+              }
+            ]
+          },
+          "docs": "Gets energy data for a breaker. Units are in watt-hour (SI unit: **Wh**) if `type` query parameter is `real`, volt-ampere-hour (SI unit: **VAh**) if `type` query parameter is `apparent`.\n"
+        },
+        {
+          "info": {
+            "name": "Building energy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.verdigris.co/data/v4/energy/buildings/:id",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Building ID"
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Interval between each data points. Affects the validity of `start_time`, `end_time` query parameters, time resolution and aggregation of results.\n\nFor example, given the time range query parameters, `start_time=2020-01-01T12:30:00Z&end_time=2020-01-01T13:00:00Z`:\n\n- `interval=1m`: returns 30 data points at minutely resolution.\n- `interval=15m`: returns 2 data points at 15-minutesly/quarter-hourly resolution.\n\nThe ordering of timestamps is not guaranteed.\n"
+              },
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query",
+                "description": "Start of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `start_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `start_time=2020-01-01T12:34:00Z&interval=1m`\n- **VALID**: `start_time=2020-01-01T12:45:00Z&interval=15m`\n- **VALID**: `start_time=2020-01-01T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T08:00:00Z&interval=1d` (UTC)\n  - `start_time=2020-01-01T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `start_time=2020-01-01T12:34:00Z&interval=15m`\n- **NOT VALID**: `start_time=2020-01-01T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T00:00:00Z&interval=1d`\n  - `start_time=2020-01-01T04:00:00+08:00&interval=1d`\n"
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query",
+                "description": "End of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `end_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `end_time=2020-12-31T12:34:00Z&interval=1m`\n- **VALID**: `end_time=2020-12-31T12:45:00Z&interval=15m`\n- **VALID**: `end_time=2020-12-31T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T08:00:00Z&interval=1d` (UTC)\n  - `end_time=2020-12-31T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `end_time=2020-12-31T12:34:00Z&interval=15m`\n- **NOT VALID**: `end_time=2020-12-31T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T00:00:00Z&interval=1d`\n  - `end_time=2020-12-31T04:00:00+08:00&interval=1d`\n"
+              },
+              {
+                "name": "timestamp_format",
+                "value": "",
+                "type": "query",
+                "description": "Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).\n"
+              },
+              {
+                "name": "timezone",
+                "value": "",
+                "type": "query",
+                "description": "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> 📘 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type of energy:\n\n- `real`: Energy calculated from real (true) power over given time interval. Returns energy in watt-hour (SI unit: **Wh**).\n- `apparent`: Energy calculated from apparent power over given time interval. Returns energy in volt-ampere-hour (SI unit: **VAh**). Apparent energy is not supported for daily interval.\n"
+              }
+            ]
+          },
+          "docs": "Gets energy data for a building. Units are in watt-hour (SI unit: **Wh**) if `type` query parameter is `real`, volt-ampere-hour (SI unit: **VAh**) if `type` query parameter is `apparent`.\n"
+        },
+        {
+          "info": {
+            "name": "Circuit energy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.verdigris.co/data/v4/energy/circuits/:id",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Circuit ID"
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Interval between each data points. Affects the validity of `start_time`, `end_time` query parameters, time resolution and aggregation of results.\n\nFor example, given the time range query parameters, `start_time=2020-01-01T12:30:00Z&end_time=2020-01-01T13:00:00Z`:\n\n- `interval=1m`: returns 30 data points at minutely resolution.\n- `interval=15m`: returns 2 data points at 15-minutesly/quarter-hourly resolution.\n\nThe ordering of timestamps is not guaranteed.\n"
+              },
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query",
+                "description": "Start of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `start_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `start_time=2020-01-01T12:34:00Z&interval=1m`\n- **VALID**: `start_time=2020-01-01T12:45:00Z&interval=15m`\n- **VALID**: `start_time=2020-01-01T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T08:00:00Z&interval=1d` (UTC)\n  - `start_time=2020-01-01T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `start_time=2020-01-01T12:34:00Z&interval=15m`\n- **NOT VALID**: `start_time=2020-01-01T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T00:00:00Z&interval=1d`\n  - `start_time=2020-01-01T04:00:00+08:00&interval=1d`\n"
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query",
+                "description": "End of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `end_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `end_time=2020-12-31T12:34:00Z&interval=1m`\n- **VALID**: `end_time=2020-12-31T12:45:00Z&interval=15m`\n- **VALID**: `end_time=2020-12-31T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T08:00:00Z&interval=1d` (UTC)\n  - `end_time=2020-12-31T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `end_time=2020-12-31T12:34:00Z&interval=15m`\n- **NOT VALID**: `end_time=2020-12-31T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T00:00:00Z&interval=1d`\n  - `end_time=2020-12-31T04:00:00+08:00&interval=1d`\n"
+              },
+              {
+                "name": "timestamp_format",
+                "value": "",
+                "type": "query",
+                "description": "Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).\n"
+              },
+              {
+                "name": "timezone",
+                "value": "",
+                "type": "query",
+                "description": "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> 📘 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type of energy:\n\n- `real`: Energy calculated from real (true) power over given time interval. Returns energy in watt-hour (SI unit: **Wh**).\n- `apparent`: Energy calculated from apparent power over given time interval. Returns energy in volt-ampere-hour (SI unit: **VAh**). Apparent energy is not supported for daily interval.\n"
+              },
+              {
+                "name": "override_phase",
+                "value": "",
+                "type": "query",
+                "description": "> ⚠️ Warning\n>\n> This query parameter is intended for advanced users troubleshooting potentially incorrect data. Incorrect use of this query parameter can lead to erroneous data.\n\nOverrides the configured phase for this circuit and returns the data as if the circuit was on the specified phase.\n\nWhen omitted, the circuit will reference the phase based on the current panel configuration.\n"
+              },
+              {
+                "name": "override_sensor_orientation",
+                "value": "",
+                "type": "query",
+                "description": "> ⚠️ Warning\n>\n> This query parameter is intended for advanced users troubleshooting potentially incorrect data. Incorrect use of this query parameter can lead to erroneous data.\n\nOverrides the configured sensor orientation to return circuit data as if the CT was clamped upside down and flip positive values to negative and vice versa.\n\nWhen omitted, the API will compute the data by referencing the sensor orientation based on the current panel configuration.\n"
+              }
+            ]
+          },
+          "docs": "Gets energy data for a circuit. Units are in watt-hour (SI unit: **Wh**) if `type` query parameter is `real`, volt-ampere-hour (SI unit: **VAh**) if `type` query parameter is `apparent`.\n"
+        },
+        {
+          "info": {
+            "name": "Panel energy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.verdigris.co/data/v4/energy/panels/:id",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Panel ID"
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query",
+                "description": "Interval between each data points. Affects the validity of `start_time`, `end_time` query parameters, time resolution and aggregation of results.\n\nFor example, given the time range query parameters, `start_time=2020-01-01T12:30:00Z&end_time=2020-01-01T13:00:00Z`:\n\n- `interval=1m`: returns 30 data points at minutely resolution.\n- `interval=15m`: returns 2 data points at 15-minutesly/quarter-hourly resolution.\n\nThe ordering of timestamps is not guaranteed.\n"
+              },
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query",
+                "description": "Start of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `start_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `start_time=2020-01-01T12:34:00Z&interval=1m`\n- **VALID**: `start_time=2020-01-01T12:45:00Z&interval=15m`\n- **VALID**: `start_time=2020-01-01T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T08:00:00Z&interval=1d` (UTC)\n  - `start_time=2020-01-01T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `start_time=2020-01-01T12:34:00Z&interval=15m`\n- **NOT VALID**: `start_time=2020-01-01T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T00:00:00Z&interval=1d`\n  - `start_time=2020-01-01T04:00:00+08:00&interval=1d`\n"
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query",
+                "description": "End of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `end_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `end_time=2020-12-31T12:34:00Z&interval=1m`\n- **VALID**: `end_time=2020-12-31T12:45:00Z&interval=15m`\n- **VALID**: `end_time=2020-12-31T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T08:00:00Z&interval=1d` (UTC)\n  - `end_time=2020-12-31T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `end_time=2020-12-31T12:34:00Z&interval=15m`\n- **NOT VALID**: `end_time=2020-12-31T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T00:00:00Z&interval=1d`\n  - `end_time=2020-12-31T04:00:00+08:00&interval=1d`\n"
+              },
+              {
+                "name": "timestamp_format",
+                "value": "",
+                "type": "query",
+                "description": "Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).\n"
+              },
+              {
+                "name": "timezone",
+                "value": "",
+                "type": "query",
+                "description": "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> 📘 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type of energy:\n\n- `real`: Energy calculated from real (true) power over given time interval. Returns energy in watt-hour (SI unit: **Wh**).\n- `apparent`: Energy calculated from apparent power over given time interval. Returns energy in volt-ampere-hour (SI unit: **VAh**). Apparent energy is not supported for daily interval.\n"
+              }
+            ]
+          },
+          "docs": "Gets energy data for a panel. Units are in watt-hour (SI unit: **Wh**) if `type` query parameter is `real`, volt-ampere-hour (SI unit: **VAh**) if `type` query parameter is `apparent`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

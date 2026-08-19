@@ -1,0 +1,969 @@
+{
+  "item": [
+    {
+      "id": "c2306d35-2022-4586-8801-1e56f07ecba9",
+      "name": "Total Harmonic Distortion",
+      "description": {
+        "content": "Endpoints that return total harmonic distortion data",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "94987a88-1f2a-4f03-b2ff-78c462eca8ab",
+          "name": "Batch panel total harmonic distortion",
+          "request": {
+            "name": "Batch panel total harmonic distortion",
+            "description": {
+              "content": "Gets average total harmonic distortion data for multiple panels in a single batch request.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "thd",
+                "panels"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "<integer>",
+                  "description": "(Required) An array of panel IDs separated by commas."
+                },
+                {
+                  "disabled": false,
+                  "key": "interval",
+                  "value": "<string>",
+                  "description": "(Required) Interval between each data points. Affects the validity of `start_time`, `end_time` query parameters, time resolution and aggregation of results.\n\nFor example, given the time range query parameters, `start_time=2020-01-01T12:30:00Z&end_time=2020-01-01T13:00:00Z`:\n\n- `interval=1m`: returns 30 data points at minutely resolution.\n- `interval=15m`: returns 2 data points at 15-minutesly/quarter-hourly resolution.\n\nThe ordering of timestamps is not guaranteed.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "start_time",
+                  "value": "<dateTime>",
+                  "description": "(Required) Start of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `start_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `start_time=2020-01-01T12:34:00Z&interval=1m`\n- **VALID**: `start_time=2020-01-01T12:45:00Z&interval=15m`\n- **VALID**: `start_time=2020-01-01T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T08:00:00Z&interval=1d` (UTC)\n  - `start_time=2020-01-01T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `start_time=2020-01-01T12:34:00Z&interval=15m`\n- **NOT VALID**: `start_time=2020-01-01T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T00:00:00Z&interval=1d`\n  - `start_time=2020-01-01T04:00:00+08:00&interval=1d`\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_time",
+                  "value": "<dateTime>",
+                  "description": "(Required) End of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `end_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `end_time=2020-12-31T12:34:00Z&interval=1m`\n- **VALID**: `end_time=2020-12-31T12:45:00Z&interval=15m`\n- **VALID**: `end_time=2020-12-31T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T08:00:00Z&interval=1d` (UTC)\n  - `end_time=2020-12-31T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `end_time=2020-12-31T12:34:00Z&interval=15m`\n- **NOT VALID**: `end_time=2020-12-31T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T00:00:00Z&interval=1d`\n  - `end_time=2020-12-31T04:00:00+08:00&interval=1d`\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "timestamp_format",
+                  "value": "<string>",
+                  "description": "Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "timezone",
+                  "value": "UTC",
+                  "description": "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> 📘 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f1762996-7877-40e4-9688-7a113cc6b8a7",
+              "name": "Average total harmonic distortion for given time range. The ordering of timestamps is not guaranteed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "thd",
+                    "panels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "interval",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 12345,\n    \"timestamp\": 1546301700000,\n    \"power-factor\": 0.025314352\n  },\n  {\n    \"id\": 12345,\n    \"timestamp\": 1546301700000,\n    \"power-factor\": 0.025314352\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "99bff4aa-b500-4504-a153-3772a03278e3",
+              "name": "Request to resource is unauthorized. This is likely due to missing access token in the `Authorization` header or an invalid token signature usually as a result of attempted token forgery by an unauthorized third-party.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "thd",
+                    "panels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "interval",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnauthorizedError\",\n  \"message\": \"No authorization token was found\",\n  \"code\": \"credentials_required\",\n  \"status\": 401\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6962b1bb-4275-421b-acb7-72811115e714",
+              "name": "Request to resource is forbidden due to insufficient permissions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "thd",
+                    "panels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "interval",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnauthorizedError\",\n  \"message\": \"Permission denied\",\n  \"code\": \"permission_denied\",\n  \"status\": 403\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1184bf99-52d1-4ddf-b603-e1364642dd8b",
+              "name": "Resource with given ID cannot be found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "thd",
+                    "panels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "interval",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"EntityNotFoundError\",\n  \"message\": \"One or more entity with given IDs does not exist in your account.\",\n  \"status\": 404,\n  \"invalidIds\": [\n    1,\n    2,\n    3\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6270f79c-3508-41e1-8b62-23f15c5ca324",
+              "name": "One or more validations for request has failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "thd",
+                    "panels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "interval",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnprocessableEntityError\",\n  \"message\": \"Validation error\",\n  \"status\": 422,\n  \"errors\": [\n    {\n      \"location\": \"query\",\n      \"msg\": \"must be in ISO 8601 format\",\n      \"param\": \"start_time\",\n      \"value\": \"1:15PM 10/13/1999\"\n    },\n    {\n      \"location\": \"query\",\n      \"msg\": \"must be in ISO 8601 format\",\n      \"param\": \"start_time\",\n      \"value\": \"1:15PM 10/13/1999\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c29f9361-eb64-4885-b716-f4c19629c38a",
+          "name": "Panel total harmonic distortion",
+          "request": {
+            "name": "Panel total harmonic distortion",
+            "description": {
+              "content": "Gets average total harmonic distortion data for a panel.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "thd",
+                "panels",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "interval",
+                  "value": "<string>",
+                  "description": "(Required) Interval between each data points. Affects the validity of `start_time`, `end_time` query parameters, time resolution and aggregation of results.\n\nFor example, given the time range query parameters, `start_time=2020-01-01T12:30:00Z&end_time=2020-01-01T13:00:00Z`:\n\n- `interval=1m`: returns 30 data points at minutely resolution.\n- `interval=15m`: returns 2 data points at 15-minutesly/quarter-hourly resolution.\n\nThe ordering of timestamps is not guaranteed.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "start_time",
+                  "value": "<dateTime>",
+                  "description": "(Required) Start of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `start_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `start_time=2020-01-01T12:34:00Z&interval=1m`\n- **VALID**: `start_time=2020-01-01T12:45:00Z&interval=15m`\n- **VALID**: `start_time=2020-01-01T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T08:00:00Z&interval=1d` (UTC)\n  - `start_time=2020-01-01T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `start_time=2020-01-01T12:34:00Z&interval=15m`\n- **NOT VALID**: `start_time=2020-01-01T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T00:00:00Z&interval=1d`\n  - `start_time=2020-01-01T04:00:00+08:00&interval=1d`\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_time",
+                  "value": "<dateTime>",
+                  "description": "(Required) End of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `end_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `end_time=2020-12-31T12:34:00Z&interval=1m`\n- **VALID**: `end_time=2020-12-31T12:45:00Z&interval=15m`\n- **VALID**: `end_time=2020-12-31T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T08:00:00Z&interval=1d` (UTC)\n  - `end_time=2020-12-31T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `end_time=2020-12-31T12:34:00Z&interval=15m`\n- **NOT VALID**: `end_time=2020-12-31T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T00:00:00Z&interval=1d`\n  - `end_time=2020-12-31T04:00:00+08:00&interval=1d`\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "timestamp_format",
+                  "value": "<string>",
+                  "description": "Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "timezone",
+                  "value": "UTC",
+                  "description": "When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.\n\nSetting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.\n\n> 📘 Note\n>\n> This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.\n"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) Panel ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8988fbbe-e0a5-4eb4-b466-167b6aae2434",
+              "name": "Average power factor data for given time range. The ordering of timestamps is not guaranteed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "thd",
+                    "panels",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interval",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Panel ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 12345,\n    \"timestamp\": 1546301700000,\n    \"power-factor\": 0.97233876\n  },\n  {\n    \"id\": 12345,\n    \"timestamp\": 1546301700000,\n    \"power-factor\": 0.97233876\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "09fa970b-7136-4ffa-b23c-b8b6764981cb",
+              "name": "Request to resource is unauthorized. This is likely due to missing access token in the `Authorization` header or an invalid token signature usually as a result of attempted token forgery by an unauthorized third-party.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "thd",
+                    "panels",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interval",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Panel ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnauthorizedError\",\n  \"message\": \"No authorization token was found\",\n  \"code\": \"credentials_required\",\n  \"status\": 401\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "78f541a8-2a7d-4181-9ce9-b67683c8c790",
+              "name": "Request to resource is forbidden due to insufficient permissions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "thd",
+                    "panels",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interval",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Panel ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnauthorizedError\",\n  \"message\": \"Permission denied\",\n  \"code\": \"permission_denied\",\n  \"status\": 403\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e32d1984-f666-4d98-934b-aaefb846c4d6",
+              "name": "Resource with given ID cannot be found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "thd",
+                    "panels",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interval",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Panel ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"EntityNotFoundError\",\n  \"message\": \"One or more entity with given IDs does not exist in your account.\",\n  \"status\": 404,\n  \"invalidIds\": [\n    1,\n    2,\n    3\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a807344f-3518-4e0f-a135-1b7c2b5ddebb",
+              "name": "One or more validations for request has failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "thd",
+                    "panels",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interval",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "timestamp_format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "timezone",
+                      "value": "America/New_york"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Panel ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnprocessableEntityError\",\n  \"message\": \"Validation error\",\n  \"status\": 422,\n  \"errors\": [\n    {\n      \"location\": \"query\",\n      \"msg\": \"must be in ISO 8601 format\",\n      \"param\": \"start_time\",\n      \"value\": \"1:15PM 10/13/1999\"\n    },\n    {\n      \"location\": \"query\",\n      \"msg\": \"must be in ISO 8601 format\",\n      \"param\": \"start_time\",\n      \"value\": \"1:15PM 10/13/1999\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.verdigris.co/data/v4",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "accessTokenUrl",
+        "value": "https://auth.verdigris.co/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "3a2b190a-3fe4-45eb-aadf-c9e112e6fdea",
+    "name": "Data Control Total Harmonic Distortion API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Microservice that serves insightful power and energy data\n\nContact Support:\n Name: Verdigris Support\n Email: support@verdigris.co",
+      "type": "text/plain"
+    }
+  }
+}

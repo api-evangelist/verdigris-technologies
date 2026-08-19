@@ -1,0 +1,415 @@
+{
+  "item": [
+    {
+      "id": "b90fbe17-5903-4ad8-b6d6-3d133cb7844a",
+      "name": "Forecast",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3cc5744f-1565-4b3e-976b-40f459d48429",
+          "name": "Batch building energy forecast",
+          "request": {
+            "name": "Batch building energy forecast",
+            "description": {
+              "content": "Gets forecasted energy data for multiple buildings in a single batch request.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "forecast",
+                "buildings"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "<integer>",
+                  "description": "(Required) An array of building IDs separated by commas."
+                },
+                {
+                  "disabled": false,
+                  "key": "start_time",
+                  "value": "<dateTime>",
+                  "description": "(Required) Start of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_time",
+                  "value": "<dateTime>",
+                  "description": "(Required) End of the query time range. Must be [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) formatted.\n"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c66d2ab1-c21b-473a-8e8f-1b6d9e131c2e",
+              "name": "Forecasted energy data for one or more buildings.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "forecast",
+                    "buildings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 12345,\n    \"timestamp\": 1546301700000,\n    \"q1\": 1337.314159,\n    \"q5\": 1337.314159,\n    \"q10\": 1337.314159,\n    \"q15\": 1337.314159,\n    \"q20\": 1337.314159,\n    \"q25\": 1337.314159,\n    \"q30\": 1337.314159,\n    \"q35\": 1337.314159,\n    \"q40\": 1337.314159,\n    \"q45\": 1337.314159,\n    \"q50\": 1337.314159,\n    \"q55\": 1337.314159,\n    \"q60\": 1337.314159,\n    \"q65\": 1337.314159,\n    \"q70\": 1337.314159,\n    \"q75\": 1337.314159,\n    \"q80\": 1337.314159,\n    \"q85\": 1337.314159,\n    \"q90\": 1337.314159,\n    \"q95\": 1337.314159,\n    \"q99\": 1337.314159\n  },\n  {\n    \"id\": 12345,\n    \"timestamp\": 1546301700000,\n    \"q1\": 1337.314159,\n    \"q5\": 1337.314159,\n    \"q10\": 1337.314159,\n    \"q15\": 1337.314159,\n    \"q20\": 1337.314159,\n    \"q25\": 1337.314159,\n    \"q30\": 1337.314159,\n    \"q35\": 1337.314159,\n    \"q40\": 1337.314159,\n    \"q45\": 1337.314159,\n    \"q50\": 1337.314159,\n    \"q55\": 1337.314159,\n    \"q60\": 1337.314159,\n    \"q65\": 1337.314159,\n    \"q70\": 1337.314159,\n    \"q75\": 1337.314159,\n    \"q80\": 1337.314159,\n    \"q85\": 1337.314159,\n    \"q90\": 1337.314159,\n    \"q95\": 1337.314159,\n    \"q99\": 1337.314159\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8f88ddeb-298d-4beb-ac3a-1b9c0bc1737f",
+              "name": "Request to resource is unauthorized. This is likely due to missing access token in the `Authorization` header or an invalid token signature usually as a result of attempted token forgery by an unauthorized third-party.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "forecast",
+                    "buildings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnauthorizedError\",\n  \"message\": \"No authorization token was found\",\n  \"code\": \"credentials_required\",\n  \"status\": 401\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "96fc53ed-3d45-4143-bd0e-01fa6683f76f",
+              "name": "Request to resource is forbidden due to insufficient permissions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "forecast",
+                    "buildings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnauthorizedError\",\n  \"message\": \"Permission denied\",\n  \"code\": \"permission_denied\",\n  \"status\": 403\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f5a7faf-e40b-4e51-a617-7f8f174ad97e",
+              "name": "Resource with given ID cannot be found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "forecast",
+                    "buildings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"EntityNotFoundError\",\n  \"message\": \"One or more entity with given IDs does not exist in your account.\",\n  \"status\": 404,\n  \"invalidIds\": [\n    1,\n    2,\n    3\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "471feb78-33fd-4709-a8f4-72631e4dee44",
+              "name": "One or more validations for request has failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "forecast",
+                    "buildings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "start_time",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end_time",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.\n\nCurrently, the supported formats are:\n\n- `application/json`\n- `text/csv`\n",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"UnprocessableEntityError\",\n  \"message\": \"Validation error\",\n  \"status\": 422,\n  \"errors\": [\n    {\n      \"location\": \"query\",\n      \"msg\": \"must be in ISO 8601 format\",\n      \"param\": \"start_time\",\n      \"value\": \"1:15PM 10/13/1999\"\n    },\n    {\n      \"location\": \"query\",\n      \"msg\": \"must be in ISO 8601 format\",\n      \"param\": \"start_time\",\n      \"value\": \"1:15PM 10/13/1999\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.verdigris.co/data/v4",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "oauth2",
+    "oauth2": [
+      {
+        "key": "accessTokenUrl",
+        "value": "https://auth.verdigris.co/oauth/token"
+      },
+      {
+        "key": "grant_type",
+        "value": "client_credentials"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "958f7513-34dd-4ed6-912d-f8f710e9c1ce",
+    "name": "Data Control Forecast API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Microservice that serves insightful power and energy data\n\nContact Support:\n Name: Verdigris Support\n Email: support@verdigris.co",
+      "type": "text/plain"
+    }
+  }
+}
