@@ -89,6 +89,8 @@ apis:
   humanURL: https://docs.verdigris.co/reference/getting-started-with-your-api
   baseURL: https://api.verdigris.co/data/v4
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
