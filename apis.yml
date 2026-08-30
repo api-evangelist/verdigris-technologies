@@ -182,6 +182,9 @@ apis:
   - type: Documentation
     url: https://docs.verdigris.co/reference/getting-started-with-your-api
 common:
+- type: CapabilityMap
+  url: capabilities/verdigris-technologies-capability-edges.yml
+  name: Verdigris Technologies Business Capability Map
 - type: TrustCenter
   url: security/verdigris-technologies-trust-center.yml
 - type: DomainSecurity
