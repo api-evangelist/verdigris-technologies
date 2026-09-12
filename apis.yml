@@ -182,6 +182,8 @@ apis:
   - type: Documentation
     url: https://docs.verdigris.co/reference/getting-started-with-your-api
 common:
+- type: Website
+  url: https://www.verdigris.co/
 - type: CapabilityMap
   url: capabilities/verdigris-technologies-capability-edges.yml
   name: Verdigris Technologies Business Capability Map
