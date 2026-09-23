@@ -1,16 +1,7 @@
 {
   "provider": "verdigris-technologies",
   "sources": [
-    "verdigris-technologies-control-api-openapi.yml",
-    "verdigris-technologies-current-api-openapi.yml",
-    "verdigris-technologies-energy-api-openapi.yml",
-    "verdigris-technologies-events-api-openapi.yml",
-    "verdigris-technologies-forecast-api-openapi.yml",
-    "verdigris-technologies-power-api-openapi.yml",
-    "verdigris-technologies-power-factor-api-openapi.yml",
-    "verdigris-technologies-total-harmonic-distortion-api-openapi.yml",
-    "verdigris-technologies-voltage-api-openapi.yml",
-    "verdigris-technologies-weather-api-openapi.yml"
+    "_original/verdigris-technologies-data-v4-openapi.json"
   ],
   "outputs": [
     "verdigris-technologies-control-api-openapi.yml",
@@ -27,6 +18,23 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "verdigris-technologies-data-v4-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "verdigris-technologies-data-v4-openapi.json: declared missing tag: Events",
+    "verdigris-technologies-data-v4-openapi.json: declared missing tag: Forecast",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "verdigris-technologies-control-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "verdigris-technologies-current-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "verdigris-technologies-energy-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "verdigris-technologies-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "verdigris-technologies-forecast-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "verdigris-technologies-power-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "verdigris-technologies-power-factor-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "verdigris-technologies-total-harmonic-distortion-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "verdigris-technologies-voltage-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "verdigris-technologies-weather-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
