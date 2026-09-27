@@ -43,7 +43,123 @@ paths:
         '422':
           $ref: '#/components/responses/unprocessableEntity'
 components:
+  responses:
+    forbidden:
+      description: Request to resource is forbidden due to insufficient permissions.
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/permissionDeniedError'
+            - $ref: '#/components/schemas/permissionsInvalidError'
+    successControl:
+      description: Control data for given time range.
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/successControlJSONEpoch'
+            - $ref: '#/components/schemas/successControlJSONISO8601'
+        text/csv:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/successControlCSVEpoch'
+            - $ref: '#/components/schemas/successControlCSVISO8601'
+    entityNotFound:
+      description: Resource with given ID cannot be found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/entityNotFoundError'
+    unauthorized:
+      description: 'Request to resource is unauthorized. This is likely due to missing access token in the `Authorization` header or an invalid token signature usually as a result of attempted token forgery by an unauthorized third-party.
+
+        '
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/unauthorizedError'
+    unprocessableEntity:
+      description: One or more validations for request has failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/unprocessableEntityError'
   parameters:
+    intervalScopedEndTime:
+      name: end_time
+      in: query
+      description: "End of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `end_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `end_time=2020-12-31T12:34:00Z&interval=1m`\n- **VALID**: `end_time=2020-12-31T12:45:00Z&interval=15m`\n- **VALID**: `end_time=2020-12-31T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T08:00:00Z&interval=1d` (UTC)\n  - `end_time=2020-12-31T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `end_time=2020-12-31T12:34:00Z&interval=15m`\n- **NOT VALID**: `end_time=2020-12-31T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T00:00:00Z&interval=1d`\n  - `end_time=2020-12-31T04:00:00+08:00&interval=1d`\n"
+      required: true
+      schema:
+        type: string
+        format: date-time
+    interval:
+      in: query
+      name: interval
+      description: 'Interval between each data points. Affects the validity of `start_time`, `end_time` query parameters, time resolution and aggregation of results.
+
+
+        For example, given the time range query parameters, `start_time=2020-01-01T12:30:00Z&end_time=2020-01-01T13:00:00Z`:
+
+
+        - `interval=1m`: returns 30 data points at minutely resolution.
+
+        - `interval=15m`: returns 2 data points at 15-minutesly/quarter-hourly resolution.
+
+
+        The ordering of timestamps is not guaranteed.
+
+        '
+      required: true
+      schema:
+        type: string
+        enum:
+        - 1m
+        - 15m
+        - 1h
+        - 1d
+        - 1M
+    timezone:
+      name: timezone
+      in: query
+      description: 'When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.
+
+
+        Setting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.
+
+
+        > 📘 Note
+
+        >
+
+        > This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.
+
+        '
+      required: false
+      schema:
+        type: string
+        default: UTC
+        format: zoneid
+      examples:
+        America/New_york:
+          summary: US/Eastern
+          value: America/New_york
+        America/Chicago:
+          summary: US/Central
+          value: America/Chicago
+        America/Denver:
+          summary: US/Mountain
+          value: America/Denver
+        America/Los_angeles:
+          summary: US/Pacific
+          value: America/Los_angeles
+        America/Anchorage:
+          summary: US/Alaska
+          value: America/Anchorage
+        Pacific/Honolulu:
+          summary: US/Hawaii
+          value: Pacific/Honolulu
     timestampFormat:
       name: timestamp_format
       in: query
@@ -85,32 +201,6 @@ components:
       schema:
         type: string
         format: date-time
-    interval:
-      in: query
-      name: interval
-      description: 'Interval between each data points. Affects the validity of `start_time`, `end_time` query parameters, time resolution and aggregation of results.
-
-
-        For example, given the time range query parameters, `start_time=2020-01-01T12:30:00Z&end_time=2020-01-01T13:00:00Z`:
-
-
-        - `interval=1m`: returns 30 data points at minutely resolution.
-
-        - `interval=15m`: returns 2 data points at 15-minutesly/quarter-hourly resolution.
-
-
-        The ordering of timestamps is not guaranteed.
-
-        '
-      required: true
-      schema:
-        type: string
-        enum:
-        - 1m
-        - 15m
-        - 1h
-        - 1d
-        - 1M
     buildingIds:
       in: query
       name: ids
@@ -123,55 +213,22 @@ components:
         items:
           type: integer
         minItems: 1
-    timezone:
-      name: timezone
-      in: query
-      description: 'When used in conjunction with `timestamp_format` query parameter that is set to `ISO8601` format, specifying the [zone ID](https://nodatime.org/TimeZones) of [IANA Time Zone Database](https://www.iana.org/time-zones) returns the timestamp in the time zone offset.
-
-
-        Setting the timezone when `timestamp_format` is not specified has no affect on the UNIX epoch timestamp.
-
-
-        > 📘 Note
-
-        >
-
-        > This query parameter meant to be a convenience feature that only affects the _display format_ of the timestamps in the result. It has no affect on the building’s timezone.
-
-        '
-      required: false
-      schema:
-        type: string
-        default: UTC
-        format: zoneid
-      examples:
-        America/New_york:
-          summary: US/Eastern
-          value: America/New_york
-        America/Chicago:
-          summary: US/Central
-          value: America/Chicago
-        America/Denver:
-          summary: US/Mountain
-          value: America/Denver
-        America/Los_angeles:
-          summary: US/Pacific
-          value: America/Los_angeles
-        America/Anchorage:
-          summary: US/Alaska
-          value: America/Anchorage
-        Pacific/Honolulu:
-          summary: US/Hawaii
-          value: Pacific/Honolulu
-    intervalScopedEndTime:
-      name: end_time
-      in: query
-      description: "End of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `end_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `end_time=2020-12-31T12:34:00Z&interval=1m`\n- **VALID**: `end_time=2020-12-31T12:45:00Z&interval=15m`\n- **VALID**: `end_time=2020-12-31T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T08:00:00Z&interval=1d` (UTC)\n  - `end_time=2020-12-31T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `end_time=2020-12-31T12:34:00Z&interval=15m`\n- **NOT VALID**: `end_time=2020-12-31T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T00:00:00Z&interval=1d`\n  - `end_time=2020-12-31T04:00:00+08:00&interval=1d`\n"
-      required: true
-      schema:
-        type: string
-        format: date-time
   schemas:
+    permissionDeniedError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnauthorizedError
+        message:
+          type: string
+          example: Permission denied
+        code:
+          type: string
+          example: permission_denied
+        status:
+          type: integer
+          example: 403
     validationError:
       type: object
       properties:
@@ -194,51 +251,40 @@ components:
         Chiller Temperature,2020-01-01T00:15:00Z,12345,24.576
 
         '
-    unauthorizedError:
+    successControlJSONEpoch:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            example: Chiller Temperature
+          timestamp:
+            type: integer
+            example: 1546301700000
+          device-id:
+            type: integer
+            example: 12345
+          control:
+            type: number
+            format: float
+            example: 24.576
+    unprocessableEntityError:
       type: object
       properties:
         name:
           type: string
-          example: UnauthorizedError
+          example: UnprocessableEntityError
         message:
           type: string
-          example: No authorization token was found
-        code:
-          type: string
-          example: credentials_required
+          example: Validation error
         status:
           type: integer
-          example: 401
-    permissionDeniedError:
-      type: object
-      properties:
-        name:
-          type: string
-          example: UnauthorizedError
-        message:
-          type: string
-          example: Permission denied
-        code:
-          type: string
-          example: permission_denied
-        status:
-          type: integer
-          example: 403
-    permissionsInvalidError:
-      type: object
-      properties:
-        name:
-          type: string
-          example: UnauthorizedError
-        message:
-          type: string
-          example: Permissions should be an Array or String. Bad format?
-        code:
-          type: string
-          example: permissions_invalid
-        status:
-          type: integer
-          example: 403
+          example: 422
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/validationError'
     entityNotFoundError:
       type: object
       properties:
@@ -259,47 +305,6 @@ components:
           - 1
           - 2
           - 3
-    unprocessableEntityError:
-      type: object
-      properties:
-        name:
-          type: string
-          example: UnprocessableEntityError
-        message:
-          type: string
-          example: Validation error
-        status:
-          type: integer
-          example: 422
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/validationError'
-    successControlJSONEpoch:
-      type: array
-      items:
-        type: object
-        properties:
-          id:
-            type: string
-            example: Chiller Temperature
-          timestamp:
-            type: integer
-            example: 1546301700000
-          device-id:
-            type: integer
-            example: 12345
-          control:
-            type: number
-            format: float
-            example: 24.576
-    successControlCSVEpoch:
-      type: string
-      example: 'id,timestamp,device-id,control
-
-        Chiller Temperature,1546301700000,12345,24.576
-
-        '
     successControlJSONISO8601:
       type: array
       items:
@@ -319,48 +324,43 @@ components:
             type: number
             format: float
             example: 24.576
-  responses:
-    unauthorized:
-      description: 'Request to resource is unauthorized. This is likely due to missing access token in the `Authorization` header or an invalid token signature usually as a result of attempted token forgery by an unauthorized third-party.
+    successControlCSVEpoch:
+      type: string
+      example: 'id,timestamp,device-id,control
+
+        Chiller Temperature,1546301700000,12345,24.576
 
         '
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/unauthorizedError'
-    entityNotFound:
-      description: Resource with given ID cannot be found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/entityNotFoundError'
-    forbidden:
-      description: Request to resource is forbidden due to insufficient permissions.
-      content:
-        application/json:
-          schema:
-            oneOf:
-            - $ref: '#/components/schemas/permissionDeniedError'
-            - $ref: '#/components/schemas/permissionsInvalidError'
-    unprocessableEntity:
-      description: One or more validations for request has failed.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/unprocessableEntityError'
-    successControl:
-      description: Control data for given time range.
-      content:
-        application/json:
-          schema:
-            oneOf:
-            - $ref: '#/components/schemas/successControlJSONEpoch'
-            - $ref: '#/components/schemas/successControlJSONISO8601'
-        text/csv:
-          schema:
-            oneOf:
-            - $ref: '#/components/schemas/successControlCSVEpoch'
-            - $ref: '#/components/schemas/successControlCSVISO8601'
+    permissionsInvalidError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnauthorizedError
+        message:
+          type: string
+          example: Permissions should be an Array or String. Bad format?
+        code:
+          type: string
+          example: permissions_invalid
+        status:
+          type: integer
+          example: 403
+    unauthorizedError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnauthorizedError
+        message:
+          type: string
+          example: No authorization token was found
+        code:
+          type: string
+          example: credentials_required
+        status:
+          type: integer
+          example: 401
   securitySchemes:
     oauth2:
       type: oauth2
