@@ -69,77 +69,8 @@ paths:
         '422':
           $ref: '#/components/responses/unprocessableEntity'
 components:
-  responses:
-    forbidden:
-      description: Request to resource is forbidden due to insufficient permissions.
-      content:
-        application/json:
-          schema:
-            oneOf:
-            - $ref: '#/components/schemas/permissionDeniedError'
-            - $ref: '#/components/schemas/permissionsInvalidError'
-    successPowerFactor:
-      description: Average power factor data for given time range. The ordering of timestamps is not guaranteed.
-      content:
-        application/json:
-          schema:
-            oneOf:
-            - $ref: '#/components/schemas/successPowerFactorJSONEpoch'
-            - $ref: '#/components/schemas/successPowerFactorJSONISO8601'
-        text/csv:
-          schema:
-            oneOf:
-            - $ref: '#/components/schemas/successPowerFactorCSVEpoch'
-            - $ref: '#/components/schemas/successPowerFactorCSVISO8601'
-    successTotalHarmonicDistortion:
-      description: Average total harmonic distortion for given time range. The ordering of timestamps is not guaranteed.
-      content:
-        application/json:
-          schema:
-            oneOf:
-            - $ref: '#/components/schemas/successTotalHarmonicDistortionJSONEpoch'
-            - $ref: '#/components/schemas/successTotalHarmonicDistortionJSONISO8601'
-        text/csv:
-          schema:
-            oneOf:
-            - $ref: '#/components/schemas/successTotalHarmonicDistortionCSVEpoch'
-            - $ref: '#/components/schemas/successTotalHarmonicDistortionCSVISO8601'
-    entityNotFound:
-      description: Resource with given ID cannot be found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/entityNotFoundError'
-    unauthorized:
-      description: 'Request to resource is unauthorized. This is likely due to missing access token in the `Authorization` header or an invalid token signature usually as a result of attempted token forgery by an unauthorized third-party.
-
-        '
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/unauthorizedError'
-    unprocessableEntity:
-      description: One or more validations for request has failed.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/unprocessableEntityError'
   schemas:
-    successPowerFactorCSVEpoch:
-      type: string
-      example: 'id,timestamp,power
-
-        12345,1546301700000,0.97233876
-
-        '
-    successTotalHarmonicDistortionCSVEpoch:
-      type: string
-      example: 'id,timestamp,power
-
-        12345,1546301700000,0.025314352
-
-        '
-    permissionDeniedError:
+    permissionsInvalidError:
       type: object
       properties:
         name:
@@ -147,82 +78,13 @@ components:
           example: UnauthorizedError
         message:
           type: string
-          example: Permission denied
+          example: Permissions should be an Array or String. Bad format?
         code:
           type: string
-          example: permission_denied
+          example: permissions_invalid
         status:
           type: integer
           example: 403
-    successPowerFactorJSONEpoch:
-      type: array
-      items:
-        type: object
-        properties:
-          id:
-            type: integer
-            example: 12345
-          timestamp:
-            type: integer
-            example: 1546301700000
-          power-factor:
-            type: number
-            format: float
-            example: 0.97233876
-    successTotalHarmonicDistortionCSVISO8601:
-      type: string
-      example: 'id,timestamp,power
-
-        12345,2020-01-01T00:15:00Z,0.025314352
-
-        '
-    validationError:
-      type: object
-      properties:
-        location:
-          type: string
-          example: query
-        msg:
-          type: string
-          example: must be in ISO 8601 format
-        param:
-          type: string
-          example: start_time
-        value:
-          type: string
-          example: 1:15PM 10/13/1999
-    successTotalHarmonicDistortionJSONISO8601:
-      type: array
-      items:
-        type: object
-        properties:
-          id:
-            type: integer
-            example: 12345
-          timestamp:
-            type: string
-            format: date-time
-            example: '2020-01-01T00:15:00Z'
-          power-factor:
-            type: number
-            format: float
-            example: 0.025314352
-    unprocessableEntityError:
-      type: object
-      properties:
-        name:
-          type: string
-          example: UnprocessableEntityError
-        message:
-          type: string
-          example: Validation error
-        status:
-          type: integer
-          example: 422
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/validationError'
     entityNotFoundError:
       type: object
       properties:
@@ -243,11 +105,18 @@ components:
           - 1
           - 2
           - 3
-    successPowerFactorCSVISO8601:
+    successTotalHarmonicDistortionCSVISO8601:
       type: string
       example: 'id,timestamp,power
 
-        12345,2020-01-01T00:15:00Z,0.97233876
+        12345,2020-01-01T00:15:00Z,0.025314352
+
+        '
+    successTotalHarmonicDistortionCSVEpoch:
+      type: string
+      example: 'id,timestamp,power
+
+        12345,1546301700000,0.025314352
 
         '
     successTotalHarmonicDistortionJSONEpoch:
@@ -265,6 +134,96 @@ components:
             type: number
             format: float
             example: 0.025314352
+    permissionDeniedError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnauthorizedError
+        message:
+          type: string
+          example: Permission denied
+        code:
+          type: string
+          example: permission_denied
+        status:
+          type: integer
+          example: 403
+    validationError:
+      type: object
+      properties:
+        location:
+          type: string
+          example: query
+        msg:
+          type: string
+          example: must be in ISO 8601 format
+        param:
+          type: string
+          example: start_time
+        value:
+          type: string
+          example: 1:15PM 10/13/1999
+    successPowerFactorCSVISO8601:
+      type: string
+      example: 'id,timestamp,power
+
+        12345,2020-01-01T00:15:00Z,0.97233876
+
+        '
+    unauthorizedError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnauthorizedError
+        message:
+          type: string
+          example: No authorization token was found
+        code:
+          type: string
+          example: credentials_required
+        status:
+          type: integer
+          example: 401
+    unprocessableEntityError:
+      type: object
+      properties:
+        name:
+          type: string
+          example: UnprocessableEntityError
+        message:
+          type: string
+          example: Validation error
+        status:
+          type: integer
+          example: 422
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/validationError'
+    successPowerFactorJSONEpoch:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 12345
+          timestamp:
+            type: integer
+            example: 1546301700000
+          power-factor:
+            type: number
+            format: float
+            example: 0.97233876
+    successPowerFactorCSVEpoch:
+      type: string
+      example: 'id,timestamp,power
+
+        12345,1546301700000,0.97233876
+
+        '
     successPowerFactorJSONISO8601:
       type: array
       items:
@@ -281,57 +240,23 @@ components:
             type: number
             format: float
             example: 0.97233876
-    permissionsInvalidError:
-      type: object
-      properties:
-        name:
-          type: string
-          example: UnauthorizedError
-        message:
-          type: string
-          example: Permissions should be an Array or String. Bad format?
-        code:
-          type: string
-          example: permissions_invalid
-        status:
-          type: integer
-          example: 403
-    unauthorizedError:
-      type: object
-      properties:
-        name:
-          type: string
-          example: UnauthorizedError
-        message:
-          type: string
-          example: No authorization token was found
-        code:
-          type: string
-          example: credentials_required
-        status:
-          type: integer
-          example: 401
+    successTotalHarmonicDistortionJSONISO8601:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 12345
+          timestamp:
+            type: string
+            format: date-time
+            example: '2020-01-01T00:15:00Z'
+          power-factor:
+            type: number
+            format: float
+            example: 0.025314352
   parameters:
-    intervalScopedEndTime:
-      name: end_time
-      in: query
-      description: "End of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `end_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `end_time=2020-12-31T12:34:00Z&interval=1m`\n- **VALID**: `end_time=2020-12-31T12:45:00Z&interval=15m`\n- **VALID**: `end_time=2020-12-31T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T08:00:00Z&interval=1d` (UTC)\n  - `end_time=2020-12-31T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `end_time=2020-12-31T12:34:00Z&interval=15m`\n- **NOT VALID**: `end_time=2020-12-31T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T00:00:00Z&interval=1d`\n  - `end_time=2020-12-31T04:00:00+08:00&interval=1d`\n"
-      required: true
-      schema:
-        type: string
-        format: date-time
-    panelIds:
-      in: query
-      name: ids
-      description: An array of panel IDs separated by commas.
-      required: true
-      style: form
-      explode: false
-      schema:
-        type: array
-        items:
-          type: integer
-        minItems: 1
     interval:
       in: query
       name: interval
@@ -358,13 +283,67 @@ components:
         - 1h
         - 1d
         - 1M
-    panelId:
-      in: path
-      name: id
-      description: Panel ID
+    intervalScopedStartTime:
+      name: start_time
+      in: query
+      description: "Start of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `start_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `start_time=2020-01-01T12:34:00Z&interval=1m`\n- **VALID**: `start_time=2020-01-01T12:45:00Z&interval=15m`\n- **VALID**: `start_time=2020-01-01T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T08:00:00Z&interval=1d` (UTC)\n  - `start_time=2020-01-01T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `start_time=2020-01-01T12:34:00Z&interval=15m`\n- **NOT VALID**: `start_time=2020-01-01T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T00:00:00Z&interval=1d`\n  - `start_time=2020-01-01T04:00:00+08:00&interval=1d`\n"
       required: true
       schema:
-        type: integer
+        type: string
+        format: date-time
+    timestampFormat:
+      name: timestamp_format
+      in: query
+      description: 'Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).
+
+        '
+      required: false
+      schema:
+        type: string
+        nullable: true
+        enum:
+        - ISO8601
+    accept:
+      in: header
+      name: Accept
+      description: 'Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.
+
+
+        Currently, the supported formats are:
+
+
+        - `application/json`
+
+        - `text/csv`
+
+        '
+      required: false
+      schema:
+        type: string
+        default: application/json
+        enum:
+        - application/json
+        - text/csv
+    intervalScopedEndTime:
+      name: end_time
+      in: query
+      description: "End of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `end_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `end_time=2020-12-31T12:34:00Z&interval=1m`\n- **VALID**: `end_time=2020-12-31T12:45:00Z&interval=15m`\n- **VALID**: `end_time=2020-12-31T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T08:00:00Z&interval=1d` (UTC)\n  - `end_time=2020-12-31T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `end_time=2020-12-31T12:34:00Z&interval=15m`\n- **NOT VALID**: `end_time=2020-12-31T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `end_time=2020-12-31T00:00:00Z&interval=1d`\n  - `end_time=2020-12-31T04:00:00+08:00&interval=1d`\n"
+      required: true
+      schema:
+        type: string
+        format: date-time
+    panelIds:
+      in: query
+      name: ids
+      description: An array of panel IDs separated by commas.
+      required: true
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: integer
+        minItems: 1
     timezone:
       name: timezone
       in: query
@@ -405,47 +384,68 @@ components:
         Pacific/Honolulu:
           summary: US/Hawaii
           value: Pacific/Honolulu
-    timestampFormat:
-      name: timestamp_format
-      in: query
-      description: 'Format timestamps in the data. If set to `ISO8601` (case-insensitive), the timestamp is returned as a string formatted in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format. If omitted, the timestamp is returned as an integer representing [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).
-
-        '
-      required: false
-      schema:
-        type: string
-        nullable: true
-        enum:
-        - ISO8601
-    accept:
-      in: header
-      name: Accept
-      description: 'Specify a [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml) to indicate the content type the client would like to receive the data in. If omitted, defaults to `application/json`.
-
-
-        Currently, the supported formats are:
-
-
-        - `application/json`
-
-        - `text/csv`
-
-        '
-      required: false
-      schema:
-        type: string
-        default: application/json
-        enum:
-        - application/json
-        - text/csv
-    intervalScopedStartTime:
-      name: start_time
-      in: query
-      description: "Start of the query time range. Value must be in [ISO 8601](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14) format.\n\nNote that validity of `start_time` changes depending on the `interval` query parameter.\n\nFor example:\n\n- **VALID**: `start_time=2020-01-01T12:34:00Z&interval=1m`\n- **VALID**: `start_time=2020-01-01T12:45:00Z&interval=15m`\n- **VALID**: `start_time=2020-01-01T13:00:00Z&interval=1h`\n- **VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T08:00:00Z&interval=1d` (UTC)\n  - `start_time=2020-01-01T00:00:00+08:00&interval=1d` (PST)\n- **NOT VALID**: `start_time=2020-01-01T12:34:00Z&interval=15m`\n- **NOT VALID**: `start_time=2020-01-01T12:59:00Z&interval=1h`\n- **NOT VALID** (if building’s timezone is in Pacific Standard Time):\n  - `start_time=2020-01-01T00:00:00Z&interval=1d`\n  - `start_time=2020-01-01T04:00:00+08:00&interval=1d`\n"
+    panelId:
+      in: path
+      name: id
+      description: Panel ID
       required: true
       schema:
-        type: string
-        format: date-time
+        type: integer
+  responses:
+    entityNotFound:
+      description: Resource with given ID cannot be found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/entityNotFoundError'
+    unprocessableEntity:
+      description: One or more validations for request has failed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/unprocessableEntityError'
+    forbidden:
+      description: Request to resource is forbidden due to insufficient permissions.
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/permissionDeniedError'
+            - $ref: '#/components/schemas/permissionsInvalidError'
+    unauthorized:
+      description: 'Request to resource is unauthorized. This is likely due to missing access token in the `Authorization` header or an invalid token signature usually as a result of attempted token forgery by an unauthorized third-party.
+
+        '
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/unauthorizedError'
+    successPowerFactor:
+      description: Average power factor data for given time range. The ordering of timestamps is not guaranteed.
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/successPowerFactorJSONEpoch'
+            - $ref: '#/components/schemas/successPowerFactorJSONISO8601'
+        text/csv:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/successPowerFactorCSVEpoch'
+            - $ref: '#/components/schemas/successPowerFactorCSVISO8601'
+    successTotalHarmonicDistortion:
+      description: Average total harmonic distortion for given time range. The ordering of timestamps is not guaranteed.
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/successTotalHarmonicDistortionJSONEpoch'
+            - $ref: '#/components/schemas/successTotalHarmonicDistortionJSONISO8601'
+        text/csv:
+          schema:
+            oneOf:
+            - $ref: '#/components/schemas/successTotalHarmonicDistortionCSVEpoch'
+            - $ref: '#/components/schemas/successTotalHarmonicDistortionCSVISO8601'
   securitySchemes:
     oauth2:
       type: oauth2
